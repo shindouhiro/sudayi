@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<!--HTML5 doctype-->
+<html>
+
+    <head>
+        <script>
+        (function() {
+    if ("-ms-user-select" in document.documentElement.style && navigator.userAgent.match(/IEMobile\/10\.0/)) {
+        var msViewportStyle = document.createElement("style");
+        msViewportStyle.appendChild(
+            document.createTextNode("@-ms-viewport{width:auto!important}")
+        );
+        document.getElementsByTagName("head")[0].appendChild(msViewportStyle);
+    }
+})();
+</script>
+
+        <title>App Framework Kitchen Sink</title>
+        <meta http-equiv="Content-type" content="text/html; charset=utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=0">
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <META HTTP-EQUIV="Pragma" CONTENT="no-cache">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <link rel="stylesheet" type="text/css" href="css/icons.css" />    
+ 
+       <!--   
+     <link rel="stylesheet" type="text/css" href="css/af.ui.css" title="default" />
+  -->
+      <link rel="stylesheet" type="text/css" href="css/main.css"  />
+      <link rel="stylesheet" type="text/css" href="css/appframework.css"  />
+      <link rel="stylesheet" type="text/css" href="css/lists.css"  />
+      <link rel="stylesheet" type="text/css" href="css/forms.css"  />
+      <link rel="stylesheet" type="text/css" href="css/buttons.css"  />        
+      <link rel="stylesheet" type="text/css" href="css/badges.css"  />        
+      <link rel="stylesheet" type="text/css" href="css/grid.css"  />
+
+      <link rel="stylesheet" type="text/css" href="css/myandroid.css"  />     
+        
+      <link rel="stylesheet" type="text/css" href="plugins/css/af.actionsheet.css"  />
+      <link rel="stylesheet" type="text/css" href="plugins/css/af.popup.css"  />
+      <link rel="stylesheet" type="text/css" href="plugins/css/af.scroller.css"  />
+      <link rel="stylesheet" type="text/css" href="plugins/css/af.selectBox.css"  />        
+      <link rel="stylesheet" href="css/public.css">
+        <!-- uncomment for intel.xdk apps 
+        <script type="text/javascript" charset="utf-8" src="intelxdk.js"></script>
+        <script type="text/javascript" charset="utf-8" src="xhr.js"></script>
+        -->
+		<!--
+		<script type="text/javascript" charset="utf-8" src="./jquery2.1.js"></script>
+        <script type="text/javascript" charset="utf-8" src="./jq.appframework.js"></script>
+		<script type="text/javascript" charset="utf-8" src="./appframework.js"></script>
+		-->
+        <script type="text/javascript" charset="utf-8" src="js/jquery.js"></script>
+        <script type="text/javascript" charset="utf-8" src="js/jq.appframework.js"></script>
+		
+        <!-- include af.desktopBrowsers.js on desktop browsers only -->
+        <script>
+
+            function loadedPanel(what) {
+                //We are going to set the badge as the number of li elements inside the target
+                $.ui.updateBadge("#aflink", $("#af").find("li").length);
+            }
+
+
+            function unloadedPanel(what) {
+                console.log("unloaded " + what.id);
+            }
+
+            if (!((window.DocumentTouch && document instanceof DocumentTouch) || 'ontouchstart' in window)) {
+                var script = document.createElement("script");
+                script.src = "plugins/af.desktopBrowsers.js";
+                var tag = $("head").append(script);
+                //$.os.desktop=true;
+            }
+
+          //  $.feat.nativeTouchScroll=true;
+          
+        </script>        
+        <script type="text/javascript" charset="utf-8" src="./plugins/af.actionsheet.js"></script>
+        <script type="text/javascript" charset="utf-8" src="./plugins/af.css3animate.js"></script>
+        <script type="text/javascript" charset="utf-8" src="./plugins/af.passwordBox.js"></script>          
+        <script type="text/javascript" charset="utf-8" src="./plugins/af.scroller.js"></script>
+        <script type="text/javascript" charset="utf-8" src="./plugins/af.selectBox.js"></script>
+        <script type="text/javascript" charset="utf-8" src="./plugins/af.touchEvents.js"></script>
+        <script type="text/javascript" charset="utf-8" src="./plugins/af.touchLayer.js"></script>
+        <script type="text/javascript" charset="utf-8" src="./plugins/af.popup.js"></script>
+
+        <script type="text/javascript" charset="utf-8" src="./ui/appframework.ui.js"></script>
+        <!-- <script type="text/javascript" charset="utf-8" src="./ui/transitions/all.js"></script> -->
+        <script type="text/javascript" charset="utf-8" src="./ui/transitions/fade.js"></script>
+        <script type="text/javascript" charset="utf-8" src="./ui/transitions/flip.js"></script>
+        <script type="text/javascript" charset="utf-8" src="./ui/transitions/pop.js"></script>
+        <script type="text/javascript" charset="utf-8" src="./ui/transitions/slide.js"></script>
+        <script type="text/javascript" charset="utf-8" src="./ui/transitions/slideDown.js"></script>
+        <script type="text/javascript" charset="utf-8" src="./ui/transitions/slideUp.js"></script>
+        <script type="text/javascript" charset="utf-8" src="./plugins/af.slidemenu.js"></script>
+        
+
+        <script type="text/javascript">
+            /* This function runs once the page is loaded, but intel.xdk is not yet active */
+            //$.ui.animateHeaders=false;
+           
+            
+			
+			$.ui.ready(function(){
+                    $("#afui").get(0).className='myandroid';
+            });
+			
+			
+			
+            var webRoot = "./";
+            // $.os.android=true;
+            //$.ui.autoLaunch = false;
+            $.ui.openLinksNewTab = false;
+            $.ui.splitview=false;
+            
+
+            $(document).ready(function(){
+                  // $.ui.launch();
+
+            });
+            /* This code is used to run as soon as intel.xdk activates */
+            var onDeviceReady = function () {
+                intel.xdk.device.setRotateOrientation("portrait");
+                intel.xdk.device.setAutoRotate(false);
+                webRoot = intel.xdk.webRoot + "";
+                //hide splash screen
+                intel.xdk.device.hideSplashScreen();
+                $.ui.blockPageScroll(); //block the page from scrolling at the header/footer
+            };
+            document.addEventListener("intel.xdk.device.ready", onDeviceReady, false);
+
+            function showHide(obj, objToHide) {
+                var el = $("#" + objToHide)[0];
+
+                if (obj.className == "expanded") {
+                    obj.className = "collapsed";
+                } else {
+                    obj.className = "expanded";
+                }
+                $(el).toggle();
+            }
+
+            if($.os.android||$.os.ie||search=="android"){
+                $.ui.ready(function(){
+                    $("#main .list").append("<li><a id='toggleAndroidTheme'>Toggle Theme Color</a></li>");
+                    var $el=$("#afui");
+                    $("#toggleAndroidTheme").bind("click",function(e){
+                        if($el.hasClass("light"))
+                            $el.removeClass("light");
+                        else
+                            $el.addClass("light");
+                    });
+                });
+            }                        
+        </script>
+
+</head>
+<body>
+	<div id="afui" class="bb">
+	<div id="content">
+		<!-- 登陆 -->
+			<div id="login" class="panel" selected="true" title="速达易" data-footer="pul_footer" data-tab="nav_login" >
+				<form style="margin-top:15%;">
+			      <p>账户</p>
+			      <input type="text" name="" id="">
+			      <p>密码</p>
+			      <input type="text" name="" id="">
+			      <div style="text-align:center">
+				      <a class="button">登陆</a>
+				      <a href="#register" class="button">注册</a>
+				      <a class="button">找回</a>
+			      </div>
+			    </form>
+			</div>
+		
+		<!-- 登陆结束 -->
+		<!-- 注册 -->
+		<div id="register" class="panel"  title="速达易" data-footer="pul_footer" data-header="pul_header">
+			<form action="verify.html">
+				<p>登陆名</p>
+				<input type="text" name="" id="">
+				<p>手机号</p>
+				<input type="text" name="" id="">
+				<p>登陆密码</p>
+				<input type="text" name="" id="">
+				<p>确认密码</p>
+				<input type="text" name="" id="">
+			    <div class="input-group" >
+				    <input id="aaaa" type="radio" value="1" name="test" >
+				    <label class="" for="aaaa">供应商-上传商品有人帮你卖</label>
+				    <input id="bbbb" type="radio" value="2" name="test">
+				    <label class="" for="bbbb">代理商-加盟速达易配送网</label>
+				    <br style="clear:both"></br>
+				</div>
+				<a href="#verify" class="button block">注册</a>
+				<a class="button block">其他方式注册</a>
+			</form>
+		</div>
+		<!-- 注册结束 -->
+		<!-- 验证 -->
+		<div id="verify" class="panel"  title="速达易" data-footer="pul_footer" data-header="pul_header">
+		<form action="" style="margin-top:10%;">
+			<p style="color:red;">我们已经发送验证码到你的手机</p>
+			<p>验证码：</p>
+			<input type="text" name="" id="">
+			<a href="#provider_intro" class="button block">下一步</a>
+		</form>
+		</div>
+		<!-- 验证结束 -->
+		<!-- 供应商 -->
+		<div id="provider_intro" class="panel"  title="速达易" data-footer="pul_footer" data-header="pul_header">
+			<h1 style="text-align:center;postion:fixed">供应商</h1>
+			<p style="font-size:16px;">这个按钮进入就让它上货！也就是进入ABCD图片选择那页，等他捣鼓完了才告诉他无法发布，因为没有认证！这个按钮进入就让它上货！也就是进入ABCD图片选择那页，等他捣鼓完了才告诉他无法发布，因为没有认证！这个按钮进入就让它上货！也就是进入ABCD图片选择那页，等他捣鼓完了才告诉他无法发布，因为没有认证！这个按钮进入就让它上货！也就是进入ABCD图片选择那页，等他捣鼓完了才告诉他无法发布，因为没有认证！这个按钮进入就让它上货！也就是进入ABCD图片选择那页，等他捣鼓完了才告诉他无法发布，因为没有认证！这个按钮进入就让它上货！也就是进入ABCD图片选择那页，等他捣鼓完了才告诉他无法发布，因为没有认证！这个按钮进入就让它上货！也就是进入ABCD图片选择那页，等他捣鼓完了才告诉他无法发布，因为没有认证！这个按钮进入就让它上货！也就是进入ABCD图片选择那页，等他捣鼓完了才告诉他无法发布，因为没有认证！这个按钮进入就让它上货！也就是进入ABCD图片选择那页，等他捣鼓完了才告诉他无法发布，因为没有认证！这个按钮进入就让它上货！也就是进入ABCD图片选择那页，等他捣鼓完了才告诉他无法发布，因为没有认证！这个按钮进入就让它上货！</p>
+			<div class="input-group">
+			  <input id="provider" type="checkbox" name="" value="" style="margin-left:15%;"><label for="provider">我愿意签约成为供应商
+    		  </label>
+			</div>
+			<a href="#provider_personal" class="button block">下一步</a>
+		</div>
+		<!-- 供应商结束 -->
+		<!-- 供应商个人中心 -->
+		<div id="provider_personal" class="panel"  title="速达易" data-footer="pul_footer" data-header="pul_header">
+			<div id="banner">
+		  		<dl>
+		  			<dd class="banner_pic">
+		  			<img src="img/2012120404030899803.jpg" alt="" width="50" height="50">
+		  			<p class="banner_name">杨小明</p>
+		  			</dd>
+		  			<dd class="banner_duty">
+		  				<p class="one">仓库 X 0</p>
+		  				<p class="two">店内商品 X 0</p>
+		  			</dd>
+		  			<dd class="banner_prove">
+		  				<p class="one">未认证</p>
+		  				<p><a href="#provider_chose" class="two">升级/认证</a></p>
+		  			</dd>
+		  		</dl>
+			</div>
+			<ul id="banner_menu">
+				<li><a href="#reshelf">快速上货</a></li>
+				<li><a href="">店铺管理</a></li>
+				<li><a href="">我的订单</a></li>
+				<li><a href="">仓库管理</a></li>
+				<li><a href="">我的消息</a></li>
+				<li><a href="">素材管理</a></li>
+				<li><a href="">查看店铺</a></li>
+				<li><a href="">员工管理</a></li>
+			</ul>
+		</div>
+		<!-- 供应商个人中心结束 -->
+		<!-- 上货 -->
+		<div id="reshelf" class="panel"  title="速达易" data-footer="pul_footer"  data-header="pul_header">
+			<ul id="reshelf_menu"  class="listview inset" style="padding-top:40px;">
+				<a href="#loading_area">
+					<li>
+						<strong class="reshelf_level">A</strong>
+						<p>△出现在网站首页最佳位置</p>
+						<p>△必定展示在手机端首页</p>
+						<p>△浏览量是B级图片的3倍</p>
+						<p>△成交率是B级图片的1。2倍</p>
+					</li>
+				</a>
+				<a href="#loading_area">
+					<li>
+					<strong class="reshelf_level">B</strong>
+						<p>△出现在网站首页最佳位置</p>
+						<p>△必定展示在手机端首页</p>
+						<p>△浏览量是B级图片的3倍</p>
+						<p>△成交率是B级图片的1。2倍</p>
+					</li>
+				</a>
+				<a href="#loading_area">
+					<li>
+						<strong class="reshelf_level">C</strong>
+						<p>△出现在网站首页最佳位置</p>
+						<p>△必定展示在手机端首页</p>
+						<p>△浏览量是B级图片的3倍</p>
+						<p>△成交率是B级图片的1。2倍</p>
+					</li>
+				</a>
+				<a href="#loading_area">
+					<li>
+						<strong class="reshelf_level">D</strong>
+						<p>△出现在网站首页最佳位置</p>
+						<p>△必定展示在手机端首页</p>
+						<p>△浏览量是B级图片的3倍</p>
+						<p>△成交率是B级图片的1。2倍</p>
+					</li>
+				</a>
+			</ul>
+		</div>
+		<!-- 上货结束 -->
+		<!-- 上货区 -->
+		<div id="loading_area" class="panel"  title="速达易" data-footer="pul_footer"  data-header="pul_header">
+			<ul class="list" style="text-align:center">
+				<li>A级图</li>
+				<li><a class="icon add ">横幅广告</a></li>
+				<li><a class="icon add ">封面图片</a></li>
+				<li><a class="icon add ">商品细节</a></li>
+			</ul>
+			<form style="margin-top:10px;">
+		      <select name="" id="">
+		      		<option value="">请选择分类</option>
+		      		<option value="">请选择分类</option>
+		      		<option value="">请选择分类</option>
+		      </select>
+		      <input type="text" placeholder="名称">
+		      <input type="text" placeholder="描述">
+		      <a class="button block" href="#loading_detail">上传</a>
+		    </form>
+		</div>
+		<!-- 上货区结束 -->
+		<!-- 上货细节 -->
+		<div id="loading_detail" class="panel"  title="速达易"   data-header="pul_header">
+			<form action="" style="margin-top:10px;" id="detail">
+				<div class="picture">
+					<input type="text" name="" id="" placeholder="规格">
+					<input type="text" name="" id="" placeholder="价格">
+					<a class="icon picture  button block">上传图片</a>
+				</div>
+			</form>
+			<footer>
+				<a id="pic_add" class="icon add"></a>
+				<a id="pic_remove" class="icon remove"></a>
+				<a class="icon upload" href="#chose_way"></a>
+			</footer>
+		</div>
+		<!-- 上货细节结束 -->
+		<!-- 选择方式 -->
+		<div id="chose_way" class="panel"  title="速达易"   data-header="pul_header">
+			<form style="margin-top:20px;">
+				<div>
+					<p>xxx店</p>
+				    <dl>
+				    	<dd class="dc">规格</dd>
+				    	<dd><input type="text" name="" id="" style="width:90%;"></dd>
+				    	<dd>
+				    	<input id="a" type="checkbox" value="1" name="test2"></input>
+						<label class="" for="a"></label>
+						<br style="clear:both"></br>
+				    	</dd>
+				    	<br class="clear">
+				    </dl>
+				     <dl>
+				    	<dd class="dc">规格</dd>
+				    	<dd><input type="text" name="" id="" style="width:90%;"></dd>
+				    	<dd>
+				    		<input id="b" type="checkbox" value="1" name="test2"></input>
+						<label class="" for="b"></label>
+						<br style="clear:both"></br>
+				    	</dd>
+				    </dl>
+				    <br class="clear">
+			    </div>
+			    <div>
+					<p>xxx店</p>
+				    <dl>
+				    	<dd class="dc">规格</dd>
+				    	<dd><input type="text" name="" id="" style="width:90%;"></dd>
+				    	<dd>  
+				    	<input id="a" type="checkbox" value="1" name="test2"></input>
+						<label class="" for="a"></label>
+						<br style="clear:both"></br>
+				    	</dd>
+				    	<br class="clear">
+				    </dl>
+				     <dl>
+				    	<dd class="dc">规格</dd>
+				    	<dd><input type="text" name="" id="" style="width:90%;"></dd>
+				    	<dd>
+				    		<input id="b" type="checkbox" value="1" name="test2"></input>
+						<label class="" for="b"></label>
+						<br style="clear:both"></br>
+				    	</dd>
+				    </dl>
+				    <br class="clear">
+			    </div>
+			  
+			    <a href="#chose_time" class="button block">下一步</a>
+			</form>
+		</div>
+		<!-- 选择方式结束 -->
+		<!-- 选择送货时间 -->
+		<div id="chose_time" class="panel"  title="速达易"   data-header="pul_header">
+			<form action="" style="margin-top:20px;">
+				<select name="" id="every">
+					<option value="">请选择方式</option>
+					<option value="" id="every_day">每日</option>
+					<option value="" id="every_week">每周</option>
+				</select>
+				<div class="every_week" style="display:none;">
+					<div class="input-group">
+					    <input id="Mon" type="checkbox" name="asdfasdf" value="1"><label for="Mon">星期一</label>
+					    <input id="Tue" type="checkbox" name="asdfasdf" value="2"><label for="Tue">星期二</label>
+					    <input id="Wed" type="checkbox" name="asdfasdf" value="3"><label for="Wed">星期三</label>
+					    <input id="Thu" type="checkbox" name="asdfasdf" value="4"><label for="Thu">星期四</label>
+					    <input id="Fri" type="checkbox" name="asdfasdf" value="5"><label for="Fri">星期五</label>
+					    <input id="Sta" type="checkbox" name="asdfasdf" value="6"><label for="Sta">星期六</label>
+					    <input id="Sun" type="checkbox" name="asdfasdf" value="7"><label for="Sun">星期日</label>
+					</div>    
+					<input type="time" name="" id="" class="time">
+					<p style="text-align:center">至</p>
+					<input type="time" name="" id="" class="time">
+				</div>
+				<div class="every_day" style="display:none;">
+					<input type="time" name="" id="" class="time">
+					<p style="text-align:center">至</p>
+					<input type="time" name="" id="" class="time">
+				</div>
+				<a  class="button block">下一步</a>
+			</form>
+		</div>
+		<!-- 选择送货时间结束 -->
+		<!-- 供应商选择 -->
+		<div id="provider_chose" class="panel"  title="速达易" data-footer="pul_footer"  data-header="pul_header">
+			<a href="#provider_personage">
+				<ul class="list inset" style="margin-top:20px;">
+						<li>
+							<strong class="title">认证个人供应商身份</strong>
+							<p>免费上传商品</p>
+							<p>添加取货点（仓库)</p>
+							<p>保证首页浏览量</p>
+							<p>未来可以升级为企业/p>
+							<p>《供应商条例》</p>
+						</li>
+				</ul>
+			</a>
+			<a href="#provider_company">
+				<ul class="list inset" style="margin-top:20px;">
+						<li>
+							<strong class="title">认证企业供应商身份</strong>
+							<p>免费上传商品</p>
+							<p>添加取货点（仓库)</p>
+							<p>保证首页浏览量</p>
+							<p>可以认证品牌</p>
+							<p>可以对外统一定价</p>
+							<p>《供应商条例》</p>
+						</li>
+				</ul>
+			</a>
+		</div>
+		<!-- 供应商选择结束 -->
+		<!-- 供应商个人认证 -->
+		<div id="provider_personage" class="panel"  title="速达易"   data-header="pul_header">
+			 <form style="margin-top:20px;">
+		      <div class="input-group">
+		        <input type="text" placeholder="负责人">
+		        <input type="text" placeholder="邮箱">
+		        <input type="text" placeholder="身份证号码">
+		        <input type="hidden" name="">
+		        <select name="" id="">
+		        	<option value="">请选择</option>
+		        	<option value="">广东省</option>
+		        </select>
+		        <select name="" id="">
+		        	<option value="">请选择</option>
+		        	<option value="">深圳市</option>
+		        </select>
+		        <select name="" id="">
+		        	<option value="">请选择</option>
+		        	<option value="">福田区</option>
+		        </select>
+		        <a class="button block" id="iden">身份证上传</a>
+		        <div class="iden" style="text-align:center"></div>
+		        <a class="button block">提交审核</a>
+		      </div>
+		    </form>
+		</div>
+		<!-- 供应商个人认证结束 -->
+		<!-- 供应商企业认证 -->
+		<div id="provider_company" class="panel"  title="速达易"   data-header="pul_header">
+			 <form style="margin-top:20px;">
+		      <div class="input-group">
+		        <input type="text" placeholder="负责人">
+		        <input type="text" placeholder="邮箱">
+		        <input type="text" placeholder="身份证号码">
+		        <input type="hidden" name="">
+		        <select name="" id="">
+		        	<option value="">请选择</option>
+		        	<option value="">广东省</option>
+		        </select>
+		        <select name="" id="">
+		        	<option value="">请选择</option>
+		        	<option value="">深圳市</option>
+		        </select>
+		        <select name="" id="">
+		        	<option value="">请选择</option>
+		        	<option value="">福田区</option>
+		        </select>
+		         <select name="" id="">
+		        	<option value="">请选择公司类型</option>
+		        	<option value="">个体户</option>
+		        	<option value="">有限公司</option>
+		        </select>
+		        <a class="button block">身份证上传</a>
+		        <a class="button block">营业执照上传</a>
+		        <a class="button block">提交审核</a>
+		      </div>
+		    </form>
+		</div>
+		<!-- 供应商企业认证结束 -->
+		<!-- 代理商 -->
+		<div id="agent" class="panel"  title="速达易"   data-header="pul_header">
+			<a href="javascript:showPopup3();">
+					<ul class="list inset" style="margin-top:20px;">
+							<li>
+								<strong class="title">申请加盟区代理</strong>
+								<p>可使用速达易微店自品牌系统</p>
+								<p>独立品牌微店</p>
+								<p>独立品牌接入</p>
+								<p>负责配送具体工作</p>
+								<p>《地区代理条例》</p>
+							</li>
+					</ul>
+				</a>
+				<a href="javascript:showPopup3();">
+					<ul class="list inset" style="margin-top:20px;">
+							<li>
+								<strong class="title">申请加盟市代理</strong>
+								<p>可使用速达易自品牌电商系统</p>
+								<p>独立域名接入（网站、微店、APP）</p>
+								<p>独立品牌接入</p>
+								<p>没有速达易标示</p>
+								<p>可开发区代理</p>
+								<p>可使用全国货物分享系统</p>
+								<p>《地区代理条例》</p>
+							</li>
+					</ul>
+				</a>
+		</div>
+		<!-- 代理商结束 -->
+	<header id="pul_header">
+		<a id="backButton" onclick="$.ui.goBack()" class="button" style="visibility: visible;">返回</a>
+		<h1>速达易</h1>
+	</header>
+	<footer id="pul_footer">
+		 <a href="#login" id="nav_login" class="icon key"></a> 
+		 <a href="#register" id="nav_register" class="icon user"></a>
+	</footer>
+	</div>
+</div>
+<script type="text/javascript" src="js/show.js"></script>
+<script src="dev/js/mobiscroll.core-2.6.2.js" type="text/javascript"></script>
+<script src="dev/js/mobiscroll.core-2.6.2-zh.js" type="text/javascript"></script>
+<link href="dev/css/mobiscroll.core-2.6.2.css" rel="stylesheet" type="text/css" />
+<link href="dev/css/mobiscroll.animation-2.6.2.css" rel="stylesheet" type="text/css" />
+<script src="dev/js/mobiscroll.datetime-2.6.2.js" type="text/javascript"></script>
+<script type="text/javascript">
+	$(function () {
+			$("#pic_add").click(function(){
+			$add="<div class='picture'><input type='text' name='' id='' placeholder='规格'><input type='text' name='' id='' placeholder='价格'><a class='icon picture  button block'>上传图片</a></div>";
+			$("#detail").append($add);
+			})
+			$("#pic_remove").click(function(){
+				$("div[class=picture]:last").remove();
+			})
+
+	        var currYear = (new Date()).getFullYear();  
+	        var opt={};
+	        opt.date = {preset : 'date'};
+	        //opt.datetime = { preset : 'datetime', minDate: new Date(2012,3,10,9,22), maxDate: new Date(2014,7,30,15,44), stepMinute: 5  };
+	        opt.datetime = {preset : 'datetime'};
+	        opt.time = {preset : 'time'};
+	        opt.default = {
+	            theme: 'android-ics light', //皮肤样式
+	            display: 'modal', //显示方式 
+	            mode: 'scroller', //日期选择模式
+	            lang:'zh',
+	            startYear:currYear - 10, //开始年份
+	            endYear:currYear + 10 //结束年份
+	        };
+
+	        $("#appDate").val('').scroller('destroy').scroller($.extend(opt['date'], opt['default']));
+	        var optDateTime = $.extend(opt['datetime'], opt['default']);
+	        var optTime = $.extend(opt['time'], opt['default']);
+	        $("#appDateTime").mobiscroll(optDateTime).datetime(optDateTime);
+	        $(".time").mobiscroll(optTime).time(optTime);
+	        
+	    });
+
+
+</script>
+</body>
+</html>

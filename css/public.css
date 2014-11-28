@@ -1,0 +1,171 @@
+/*公共*/
+	a{
+		text-decoration: none;
+	}
+	li{
+		list-style-type: none;
+	}
+	dd{
+		float: left;
+		margin-left: 10%;
+		height: 40px;
+	}
+	.title{
+		color:red;
+	}
+	.dc{
+		line-height: 40px;
+	}
+	.clear{
+		clear:both;
+	}
+	#afui input[type="radio"] + label{
+		float: left;
+		margin-left: 10%;
+	}
+	#afui .listview{
+	margin: 0 -10px;
+	background:#fff;	
+	}
+	#afui .listview li{
+		border-bottom: 1px solid #CCCCCC;
+	    display: block;    
+		padding-left:10px;
+		position:relative;
+	}
+	#afui .listview li a{
+		text-decoration:none;
+		display:block;
+		color:#666;
+		height:60px;
+		line-height:60px;
+			 
+	}
+	#afui .listview > li > a:after {
+	  position: absolute;
+	  right: 8px;
+	  font-family: 'chevron';
+	  speak: none;
+	  font-style: normal;
+	  font-weight: normal;
+	  font-variant: normal;
+	  text-transform: none;
+	  line-height: 1;
+	  -webkit-font-smoothing: antialiased;
+	  content: "\f054";
+	  top: 50%;
+	  margin-top: -0.5em;
+	  color:inherit;
+	}
+	#afui .listview li a .af-badge {
+		position:absolute;
+		top:20px; right:24px;
+		display:inline-block;
+		min-width:20px;	max-width:90%; height:20px;
+		padding:0 3px;
+		background-color:red;
+		border-radius:20px;
+		font-size:12px;
+		line-height:19px;
+		font-weight:bold;
+		color:#fff;
+		text-overflow:ellipsis;
+		text-align:center;
+		text-shadow:0 -1px 0 rgba(64,0,0,.6);
+	}
+
+	#afui .listview li a img{	
+		
+		float:left;
+		display:block;
+		padding-top:12px;
+		padding-right:6px;
+	}
+	#afui .listview li.divider {
+    color: #6C6C6C;
+    background: none repeat scroll 0% 0% #ECF2F5;
+    padding: 8px 20px 8px 4px;
+	}
+	#afui .listview li {
+    border-bottom: 1px solid #CCC;
+    display: block;
+    padding-left: 10px;
+    position: relative;
+	}
+	/*供应商个人中心*/
+	#banner{
+	margin:10px 0;
+	height: 120px;
+	background:#0068A6;
+	color: #fff;
+	font-family: "微软雅黑";
+	position: relative;
+	}
+	#banner a{
+		color: #fff;
+	}
+	#banner img{
+		border-radius: 50px;
+	}
+	.banner_pic{
+		width: 25%;
+		text-indent: 10px;	
+		position: absolute;
+		top: 20px;
+	}
+	.banner_duty{
+		width: 30%;
+		position: absolute;
+		left: 20%;
+		top: 40%;
+	}
+	.banner_prove{
+		width: 30%;
+		position: absolute;
+		left: 60%;
+		top: 40%;
+	}
+	#banner_menu li{
+		float:left;
+		width: 50%;
+		text-align: center;
+		height: 60px;
+		line-height: 60px;
+		border:1px solid #eee;
+		left;
+		font-weight: bold;
+		text-shadow: 0 1px 0 #fff;
+	}
+	#banner_menu li a:hover{
+		background: #0068A6;
+		color: #fff;
+	}
+	#banner_menu a{
+		display: block;
+		color: #53575E;
+	}
+	/*上货 */
+	#reshelf_menu li{
+		height: 120px;
+	}
+	#reshelf_menu li img{
+	}
+	.reshelf_level{
+		font-size: 100px;
+		float: left;
+	}
+	#reshelf_menu p{
+		float: left;
+		margin: 1% 10%;
+		padding: 0;
+	}
+    #afui .list > li > a:after {
+		content:"";
+	}
+	/*上货细节*/
+	#afui #detail input[type="text"]{
+		margin-bottom: 0;
+	}
+	#afui #detail .button{
+		margin: 0 0 20px 0;
+	}
