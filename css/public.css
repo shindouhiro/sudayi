@@ -19,6 +19,22 @@
 	.clear{
 		clear:both;
 	}
+	/*快递*/
+	td{
+		height: 70px;
+		border-bottom: 1px solid #eee;
+	}
+	.sendman_left{
+		width: 30%;
+		text-align: left;
+	}
+	.sendman_right{
+		text-align: right;
+	}
+	#senman_personal img{
+		margin-top: 2%;
+		border-radius: 30px;
+	}
 	#afui input[type="radio"] + label{
 		float: left;
 		margin-left: 10%;
