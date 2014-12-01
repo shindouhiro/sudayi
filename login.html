@@ -95,7 +95,7 @@
         <script type="text/javascript" charset="utf-8" src="./ui/transitions/slideUp.js"></script>
         <script type="text/javascript" charset="utf-8" src="./plugins/af.slidemenu.js"></script>
         
-
+		<script type="text/javascript" src="js/common.js"></script>
         <script type="text/javascript">
             /* This function runs once the page is loaded, but intel.xdk is not yet active */
             //$.ui.animateHeaders=false;
@@ -154,23 +154,87 @@
                 });
             }                        
         </script>
+<script type="text/javascript">
+		$(function(){
+			// 登陆
+			$("#login_submit").click(function(){
+				var username = $("#username").val();
+				var password = $("#password").val();
+			$.get('http://www.29mins.com/mobile_admin/mobile_login/get_account?mobile='+username+'&password='+password+'',function(data){
+					var obj = JSON.parse(data);
+					var mobile=obj.mobile;
+					if(mobile){
+					setItem('username',mobile)
+					}else{
+						// alert(obj);
+					}
+				})
+			})
+			// 注册移开
+			// 用户
+			$("#user").blur(function(){
+				var user = $("#user").val();
+				$.get('http://www.29mins.com/mobile_admin/mobile_login/judge_same_username?username='+user+'',function(data){
+					var obj = JSON.parse(data);
+					// alert(obj);
+				})
+			})
+			// 手机
+			$("#tel").blur(function(){
+				var tel = $("#tel").val();
+				$.get('http://www.29mins.com/mobile_admin/mobile_login/judge_same_mobile?mobile='+tel+'',function(data){
+					var obj = JSON.parse(data);
+					// alert(obj);
+				})
+			})
+			$("#email").blur(function(){
+				var email = $("#email").val();
+				$.get('http://www.29mins.com/mobile_admin/mobile_login/judge_same_email?email='+email+'',function(data){
+					var obj = JSON.parse(data);
+					// alert(obj);
+				})
+			})
+			// 注册
+			$("#res_submit").click(function(){
+				// alert(123);
+				var user = $("#user").val();
+				var tel  = $("#tel").val();
+				var pwd  = $("#pwd").val();
+				var apwd = $("#apwd").val();
+				var email = $("#email").val();
+				var way  = $(':radio[name="way"]:checked').val();
+				// var url2 ='http://www.29mins.com/mobile_admin/mobile_login/create_account?user='+user+'&tel='+tel+'&pwd='+pwd+'&apwd='+apwd+'way='+way+'';
+				$.get('http://www.29mins.com/mobile_admin/mobile_login/create_account?user='+user+'&tel='+tel+'&pwd='+pwd+'&apwd='+apwd+'&way='+way+'&email='+email+'',function(data){
+					var obj = JSON.parse(data);
+					if(obj==1){
+						wlocation.hash('#provider_intro');
+					}
+				})
+			})
+			// 验证码
+			$("#code_submit").click(function(){
 
+			})
+		})
+</script>
 </head>
 <body>
 	<div id="afui" class="bb">
 	<div id="content">
 		<!-- 登陆 -->
+
 			<div id="login" class="panel" selected="true" title="速达易" data-footer="pul_footer" data-tab="nav_login" >
 				<form style="margin-top:15%;">
 			      <p>账户</p>
-			      <input type="text" name="" id="">
+			      <input type="text" name="" id="username">
 			      <p>密码</p>
-			      <input type="text" name="" id="">
+			      <input type="password" name="" id="password">
 			      <div style="text-align:center">
-				      <a class="button">登陆</a>
+				      <a class="button" id="login_submit">登陆</a>
 				      <a href="#register" class="button">注册</a>
 				      <a class="button">找回</a>
 			      </div>
+			   <!--    <a class="button block" onclick="getItem('username')">获取username</a> -->
 			    </form>
 			</div>
 		
@@ -179,21 +243,23 @@
 		<div id="register" class="panel"  title="速达易" data-footer="pul_footer" data-header="pul_header">
 			<form action="verify.html">
 				<p>登陆名</p>
-				<input type="text" name="" id="">
+				<input type="text" name="user" id="user">
 				<p>手机号</p>
-				<input type="text" name="" id="">
+				<input type="text" name="tel" id="tel">
+				<p>邮箱</p>
+				<input type="text" name="email" id="email">
 				<p>登陆密码</p>
-				<input type="text" name="" id="">
+				<input type="text" name="pwd" id="pwd">
 				<p>确认密码</p>
-				<input type="text" name="" id="">
+				<input type="text" name="apwd" id="apwd">
 			    <div class="input-group" >
-				    <input id="aaaa" type="radio" value="1" name="test" >
-				    <label class="" for="aaaa">供应商-上传商品有人帮你卖</label>
-				    <input id="bbbb" type="radio" value="2" name="test">
-				    <label class="" for="bbbb">代理商-加盟速达易配送网</label>
+				    <input id="pro" type="radio" value="1" name="way" >
+				    <label class="" for="pro">供应商-上传商品有人帮你卖</label>
+				    <input id="agent" type="radio" value="2" name="way">
+				    <label class="" for="agent">代理商-加盟速达易配送网</label>
 				    <br style="clear:both"></br>
 				</div>
-				<a href="#verify" class="button block">注册</a>
+				<a  class="button block" id="res_submit">注册</a>
 				<a class="button block">其他方式注册</a>
 			</form>
 		</div>
@@ -203,13 +269,13 @@
 		<form action="" style="margin-top:10%;">
 			<p style="color:red;">我们已经发送验证码到你的手机</p>
 			<p>验证码：</p>
-			<input type="text" name="" id="">
-			<a href="#provider_intro" class="button block">下一步</a>
+			<input type="text" name="code" id="code">
+			<a href="#provider_intro" class="button block" id="code_submit">下一步</a>
 		</form>
 		</div>
 		<!-- 验证结束 -->
 		<!-- 供应商 -->
-		<div id="provider_intro" class="panel"  title="速达易" data-footer="pul_footer" data-header="pul_header">
+		<div id="provider_intro" class="panel"  title="速达易" data-footer="pul_footer" data-header="pul_header" >
 			<h1 style="text-align:center;postion:fixed">供应商</h1>
 			<p style="font-size:16px;">这个按钮进入就让它上货！也就是进入ABCD图片选择那页，等他捣鼓完了才告诉他无法发布，因为没有认证！这个按钮进入就让它上货！也就是进入ABCD图片选择那页，等他捣鼓完了才告诉他无法发布，因为没有认证！这个按钮进入就让它上货！也就是进入ABCD图片选择那页，等他捣鼓完了才告诉他无法发布，因为没有认证！这个按钮进入就让它上货！也就是进入ABCD图片选择那页，等他捣鼓完了才告诉他无法发布，因为没有认证！这个按钮进入就让它上货！也就是进入ABCD图片选择那页，等他捣鼓完了才告诉他无法发布，因为没有认证！这个按钮进入就让它上货！也就是进入ABCD图片选择那页，等他捣鼓完了才告诉他无法发布，因为没有认证！这个按钮进入就让它上货！也就是进入ABCD图片选择那页，等他捣鼓完了才告诉他无法发布，因为没有认证！这个按钮进入就让它上货！也就是进入ABCD图片选择那页，等他捣鼓完了才告诉他无法发布，因为没有认证！这个按钮进入就让它上货！也就是进入ABCD图片选择那页，等他捣鼓完了才告诉他无法发布，因为没有认证！这个按钮进入就让它上货！也就是进入ABCD图片选择那页，等他捣鼓完了才告诉他无法发布，因为没有认证！这个按钮进入就让它上货！</p>
 			<div class="input-group">
@@ -688,8 +754,10 @@
 		<a id="backButton" onclick="$.ui.goBack()" class="button" style="visibility: visible;">返回</a>
 	</header>
 	<footer id="pul_footer">
-		 <a href="#login" id="nav_login" class="icon key"></a> 
-		 <a href="#register" id="nav_register" class="icon user"></a>
+		 <a href="#login" id="nav_login" class="icon key">用户登陆</a> 
+		 <a href="#register" id="nav_register" class="icon user">
+		 	用户注册
+		 </a>
 	</footer>
 	</div>
 </div>
