@@ -196,7 +196,43 @@
 			})
 			// 注册
 			$("#res_submit").click(function(){
-				// alert(123);
+				// $(".user").html("");
+				// $(".pwd").html("");
+				// $(".apwd").html("");
+				// $(".tel").html("");
+				// $(".email").html("");
+				// $ck_user=/\w{6,18}/;
+				// $ck_pwd=/\S{6,18}/;
+				// $ck_apwd=/\S{6,18}/;
+				// $ck_tel=/\d{11}/;
+				// $ck_email=/^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+((\.[a-zA-Z0-9_-]{2,3}){1,2})$/;
+				// $user=$("#user").val();
+				// $pwd=$("#pwd").val();
+				// $apwd=$("#apwd").val();
+				// $tel=$("#tel").val();
+				// $email=$("#email").val();
+				// if($ck_user.test($user)==false){
+				// 	$(".user").html("*账户不合法,不能使用特殊字符<br>");
+				// }
+				// if($ck_tel.test($tel)==false){
+				// 	$(".tel").html("*手机格式错误<br>");
+				// }
+				// if($ck_pwd.test($pwd)==false){
+				// 	$(".pwd").html("*密码设置错误。密码长度过小<br>");
+				// }
+				// if($ck_apwd.test($apwd)==false){
+				// 	$(".apwd").html("*密码设置错误。密码长度过小<br>");
+				// }
+				// if($pwd!=$apwd){
+				// 	$(".pwd").html("*密码输入不一致<br>");
+				// 	$(".apwd").html("*密码输入不一致<br>");
+				// }
+				// if($ck_email.test($email)==false){
+				// 	$(".email").html("*邮箱格式不符");
+				// }
+				// if($ck_user.test($user) && $ck_pwd.test($pwd) && $ck_apwd.test($apwd)  && $ck_tel.test($tel) && $pwd==$apwd){
+				// 	return false;
+				// }
 				var user = $("#user").val();
 				var tel  = $("#tel").val();
 				var pwd  = $("#pwd").val();
@@ -206,23 +242,51 @@
 				// var url2 ='http://www.29mins.com/mobile_admin/mobile_login/create_account?user='+user+'&tel='+tel+'&pwd='+pwd+'&apwd='+apwd+'way='+way+'';
 				$.get('http://www.29mins.com/mobile_admin/mobile_login/create_account?user='+user+'&tel='+tel+'&pwd='+pwd+'&apwd='+apwd+'&way='+way+'&email='+email+'',function(data){
 					var obj = JSON.parse(data);
-					if(obj==1){
-						wlocation.hash('#provider_intro');
+					var type=obj.admin_type;
+					alert(obj);
+					if(type==1){
+						var id = obj._id;
+						setItem('u_id',id);
+						setItem('jump',1);
+						
+					}else if(type==2){
+						var id = obj._id;
+						setItem('u_id',id);
+						setItem('jump',2);
 					}
+					
 				})
 			})
 			// 验证码
 			$("#code_submit").click(function(){
-
+				var jump=getItem('jump');
+				if(jump==1){
+					$.ui.loadContent("#provider_intro"); //跳转
+				}else if(jump==2){
+					$.ui.loadContent("#agency_intro");
+				}
 			})
+			$("#pp_submit").click(function(){
+				var id=getItem('u_id');
+				alert(id);
+				var test = $("#test").val();
+				alert(test);
+				$.post('http://www.29mins.com/mobile_admin/mobile_login/update_account_url',{userid:id,url:test},function(data){
+					var obj = JSON.parse(data);
+					alert(obj);
+				})
+			})
+		
 		})
 </script>
+<!-- <script type="text/javascript" src="js/cordova.js"></script> -->
+<!-- <script type="text/javascript" src="js/pc_upload.js"></script>
+<script type="text/javascript" src="js/pp_upload.js"></script> -->
 </head>
 <body>
 	<div id="afui" class="bb">
 	<div id="content">
 		<!-- 登陆 -->
-
 			<div id="login" class="panel" selected="true" title="速达易" data-footer="pul_footer" data-tab="nav_login" >
 				<form style="margin-top:15%;">
 			      <p>账户</p>
@@ -234,24 +298,28 @@
 				      <a href="#register" class="button">注册</a>
 				      <a class="button">找回</a>
 			      </div>
-			   <!--    <a class="button block" onclick="getItem('username')">获取username</a> -->
 			    </form>
 			</div>
 		
 		<!-- 登陆结束 -->
 		<!-- 注册 -->
 		<div id="register" class="panel"  title="速达易" data-footer="pul_footer" data-header="pul_header">
-			<form action="verify.html">
+			<form action="">
 				<p>登陆名</p>
 				<input type="text" name="user" id="user">
+				<p class="user col"></p>
 				<p>手机号</p>
 				<input type="text" name="tel" id="tel">
+				<p class="tel col"></p>
 				<p>邮箱</p>
 				<input type="text" name="email" id="email">
+				<p class="email col"></p>
 				<p>登陆密码</p>
 				<input type="text" name="pwd" id="pwd">
+				<p class="pwd col"></p>
 				<p>确认密码</p>
 				<input type="text" name="apwd" id="apwd">
+				<p class="apwd col"></p>
 			    <div class="input-group" >
 				    <input id="pro" type="radio" value="1" name="way" >
 				    <label class="" for="pro">供应商-上传商品有人帮你卖</label>
@@ -259,7 +327,7 @@
 				    <label class="" for="agent">代理商-加盟速达易配送网</label>
 				    <br style="clear:both"></br>
 				</div>
-				<a  class="button block" id="res_submit">注册</a>
+				<a href="#verify" class="button block" id="res_submit">注册</a>
 				<a class="button block">其他方式注册</a>
 			</form>
 		</div>
@@ -270,7 +338,7 @@
 			<p style="color:red;">我们已经发送验证码到你的手机</p>
 			<p>验证码：</p>
 			<input type="text" name="code" id="code">
-			<a href="#provider_intro" class="button block" id="code_submit">下一步</a>
+			<a  class="button block" id="code_submit">下一步</a>
 		</form>
 		</div>
 		<!-- 验证结束 -->
@@ -527,15 +595,17 @@
 		        	<option value="">请选择</option>
 		        	<option value="">福田区</option>
 		        </select>
-		        <a class="button block" id="iden">身份证上传</a>
-		        <div class="iden" style="text-align:center"></div>
-		        <a class="button block">提交审核</a>
+		        <input type="file" name="pic" id="test">
+		        <a class="button block" id="pp_iden">身份证上传</a>
+		        <div class="pp_iden"></div>
+		        <input type="hidden" name="pp_idens" id="pp_idens"/>
+		        <a class="button block" id="pp_submit">提交审核</a>
 		      </div>
 		    </form>
 		</div>
 		<!-- 供应商个人认证结束 -->
 		<!-- 供应商企业认证 -->
-		<div id="provider_company" class="panel"  title="速达易"   data-header="pul_header">
+		<div id="provider_company" class="panel"  title="速达易"   data-header="pul_header" data-footer="none">
 			 <form style="margin-top:20px;">
 		      <div class="input-group">
 		        <input type="text" placeholder="负责人">
@@ -559,13 +629,28 @@
 		        	<option value="">个体户</option>
 		        	<option value="">有限公司</option>
 		        </select>
-		        <a class="button block">身份证上传</a>
-		        <a class="button block">营业执照上传</a>
-		        <a class="button block">提交审核</a>
+		        <a class="button block" id="pc_iden">身份证上传</a>
+		         <div class="pc_iden"></div>	
+		        <a class="button block" id="pc_off">营业执照上传</a>
+	  			<div class="pc_off" ></div>	
+			  	<input type="hidden" name="pc_idens" id="pc_idens"/>
+			  	<input type="hidden" name="pc_offs" id="pc_offs"/>
+		        <a class="button block" id="pc_submit">提交审核</a>
 		      </div>
 		    </form>
 		</div>
 		<!-- 供应商企业认证结束 -->
+		<div id="agency_intro" class="panel"  title="速达易"   data-header="pul_header">
+			<h1 style="text-align:center;postion:fixed">代理商</h1>
+			<p style="font-size:16px;">这个按钮进入就让它上货！也就是进入ABCD图片选择那页，等他捣鼓完了才告诉他无法发布，因为没有认证！这个按钮进入就让它上货！也就是进入ABCD图片选择那页，等他捣鼓完了才告诉他无法发布，因为没有认证！这个按钮进入就让它上货！也就是进入ABCD图片选择那页，等他捣鼓完了才告诉他无法发布，因为没有认证！这个按钮进入就让它上货！也就是进入ABCD图片选择那页，等他捣鼓完了才告诉他无法发布，因为没有认证！这个按钮进入就让它上货！也就是进入ABCD图片选择那页，等他捣鼓完了才告诉他无法发布，因为没有认证！这个按钮进入就让它上货！也就是进入ABCD图片选择那页，等他捣鼓完了才告诉他无法发布，因为没有认证！这个按钮进入就让它上货！也就是进入ABCD图片选择那页，等他捣鼓完了才告诉他无法发布，因为没有认证！这个按钮进入就让它上货！也就是进入ABCD图片选择那页，等他捣鼓完了才告诉他无法发布，因为没有认证！这个按钮进入就让它上货！也就是进入ABCD图片选择那页，等他捣鼓完了才告诉他无法发布，因为没有认证！这个按钮进入就让它上货！也就是进入ABCD图片选择那页，等他捣鼓完了才告诉他无法发布，因为没有认证！这个按钮进入就让它上货！</p>
+			<div class="input-group">
+			  <input id="ag" type="checkbox" name="" value="" style="margin-left:15%;"><label for="ag">我愿意签约成为代理商
+    		  </label>
+			</div>
+			<a href="#agency_chose" class="button block">下一步</a>
+		</div>
+		<!-- 代理商介绍 -->
+		agency_intro.html
 		<!-- 代理商 -->
 		<div id="agency_chose" class="panel"  title="速达易"   data-header="pul_header">
 			<a href="#agency_area">
@@ -644,6 +729,7 @@
 			        	<option value="">请选择</option>
 			        	<option value="">福田区</option>
 			        </select>
+
 			        <a class="button block" id="iden">身份证上传</a>
 			        <div class="iden" style="text-align:center"></div>
 			        <a class="button block">提交审核</a>
@@ -749,6 +835,138 @@
 			</table>
 		</div>
 		<!-- 快递订单信息结束 -->
+		<!-- 我的店铺 -->
+		<div id="stores" class="panel"  title="速达易"   data-header="pul_header">
+			<div id="banner">
+		  		<dl>
+		  			<dd class="banner_pic">
+		  			<img src="img/2012120404030899803.jpg" alt="" width="50" height="50">
+		  			<p class="banner_name">杨小明</p>
+		  			</dd>
+		  			<dd class="banner_duty">
+		  				<p class="one">仓库 X 3</p>
+		  				<p class="two">店内商品 X 35</p>
+		  			</dd>
+		  			<dd class="banner_prove">
+		  				<p class="one">个体认证</p>
+		  				<p><a href="#provider_chose" class="two">品牌代理认证</a></p>
+		  			</dd>
+		  		</dl>
+			</div>
+			<div style="text-align:center;">
+				<a href="#order" class="button">订单</a>
+				<a href="#connect" class="button">交接</a>
+				<a href="#guard" class="button">保障</a>
+				<a href="" class="button">完成</a>
+			</div>
+		</div>
+		<!-- 我的店铺结束 -->
+		<!-- 我的订单 -->
+		<div id="order" class="panel"  title="速达易"   data-header="pul_header">
+			<table cellspacing="0" cellpadding="0" width="100%">
+		    	<tr>
+		    		<td>
+		    			<img src="img/cetian.jpg" alt="" width="50" height="50" style="border-radius:50px;">
+		    		</td>
+		    		<td>
+		    		<p>今天<span class="tamp">15:00</span>前到达XXX取件购买</p>
+		    		<p>取件员：王小强13800000000</p>
+		    		</td>
+		    	</tr>
+
+		    	<tr>
+		    		<td>
+		    			<img src="img/goods2.jpg" alt="" width="150" height="150">
+		    		</td>
+		    		<td>
+		    		<p>女士皮包 X 1 </p>
+					<p>黑色 小码</p>
+					<p>取件应付 ￥200 X 1</p>
+					<p>取件限时  20:00</p>
+		    		</td>
+		    	</tr>
+
+		    	<tr>
+		    		<td style="color:red" class="time">
+		                 05:00
+		    		</td>
+		    		<td>
+		    			<a href="" class="button">接单</a>
+		    			<a href="" class="button">缺货</a>
+		    		</td>
+		    	</tr>
+			</table>
+		</div>
+		<!-- 我的订单结束 -->
+		<!-- 交接 -->
+		<div id="connect" class="panel"  title="速达易"   data-header="pul_header">
+			<table cellpadding="0" cellspacing="0" width="100%">
+		    	<tr>
+		    		<td>
+		    			<img src="img/cetian.jpg" alt="" width="50" height="50" style="border-radius:50px;">
+		    		</td>
+		    		<td>
+		    			<p>201410011430完成交接收款￥200</p>
+						<p>取件员：王小强13800000000</p>
+		    		</td>
+		    	</tr>
+
+		    	<tr>
+		    		<td>
+		    			<img src="img/goods2.jpg" alt="" width="150" height="150">
+		    		</td>
+		    		<td>
+			    		<p>女士皮包 X 1 </p>
+						<p>黑色 小码</p>
+						<p>取件应付 ￥200 X 1</p>
+						<p>取件限时  20:00</p>
+		    		</td>
+		    	</tr>
+		    	<tr>
+		    		<td colspan="2" align="center">
+		    			<a class="button">实物晒单</a>
+		    			<a class="button">编辑商品</a>
+		    		</td>
+		    	</tr>
+		    </table>
+
+
+    	</div>
+		<!-- 交接结束 -->
+		<!-- 保障 -->
+		<div id="guard" class="panel"  title="速达易"   data-header="pul_header">
+			 <table width="100%">
+			      <tr>
+			        <td colspan="2" align="center">
+			          <span style="font-size:70px;color:yellow;">●●●●●●●</span>
+			        <p><span class="year">2014</span><span class="day">1001</span><span class="second">1600</span>完成 </p>
+			        <p>现在第10日客户享有换货权益</p>
+			        </td>
+			      </tr>
+			     <tr>
+			        <td>
+			          <img src="img/goods2.jpg" alt="" width="150" height="150">
+			        </td>
+			        <td>
+			        <p>女士皮包 X 1 </p>
+			        <p>黑色 小码</p>
+			        <p>取件应付 ￥200 X 1</p>
+			        <p>取件限时  20:00</p>
+			        </td>
+			      </tr>
+			      <tr>
+			        <td colspan="2" style="text-align:center">
+			       		<a class="button">配送打赏</a>
+			       		<a class="button">客户评价</a>
+			       		<a class="button">综合评价</a>
+			       		<a class="button">实物晒单</a>
+			       		<a class="button">编辑商品</a>
+			        </td>
+			      </tr>
+	    	</table>
+
+		</div>
+		<!-- 保障结束 -->
 	<header id="pul_header">
 		<h1>速达易</h1>
 		<a id="backButton" onclick="$.ui.goBack()" class="button" style="visibility: visible;">返回</a>
