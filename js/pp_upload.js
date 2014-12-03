@@ -6,8 +6,8 @@
  			navigator.camera.getPicture(onSuccess1, onFail, { 
 				quality: 70,
 			    destinationType: Camera.DestinationType.FILE_URL, //以文件地址返回url
-			    sourceType:Camera.PictureSourceType.Camera,
-			   //  sourceType:Camera.PictureSourceType.PHOTOLIBRARY,
+			    // sourceType:Camera.PictureSourceType.Camera,
+			    sourceType:Camera.PictureSourceType.PHOTOLIBRARY,
 			   // mediaType:Camera.MediaType.VIDEO,
 			}); 			
  		})
@@ -32,21 +32,34 @@
 $(function(){
 	$("#pp_submit").click(function(){
 		
-		var imageURI=$("#pc_idens").val();
+		var imageURI=$("#pp_idens").val();
 		 var options = new FileUploadOptions();
-          options.fileKey="file";
+          options.fileKey="url";
            options.fileName=imageURI.substr(imageURI.lastIndexOf('/')+1);
            options.mimeType="image/jpeg";
             var params = {};
             var id = getItem('u_id');
-            params.name = id;
-            params.name = "iden";
+            var p_principal=$("#p_principal").val();
+            var p_email=$("#p_email").val();
+            var p_iden=$("#p_iden").val();
+            var p_province=$("#p_province").val();
+            var p_city=$("#p_city").val();
+            var p_area=$("#p_area").val();
+            alert(id);
+            alert(p_principal);
+            params.userid = id;
+            params.p_principal= p_principal;
+            params.p_email= p_email;
+            params.p_iden=p_iden;
+            params.p_province=p_province;
+            params.p_city=p_city;
+            params.p_area=p_area;
            	options.params = params;
            var ft = new FileTransfer();
-           ft.upload(imageURI, encodeURI("http://yongxinghua.is-great.net/upload.php"), win, fail, options);
+           ft.upload(imageURI, encodeURI("http://www.29mins.com/mobile_admin/mobile_login/update_account_url"), win, fail, options);
 	})
 	 function win(r) {
-			alert("上传成功");
+	 	alert(r.name);
        }
 
         function fail(error) {

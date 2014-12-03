@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<script type="text/javascript" src="js/jquery.js"></script>
+	<script type="text/javascript">
+		function aa(url,name){
+			alert(url);
+			alert(name.length);
+			alert(name[0]);
+			alert(name.length);
+			for(var i=0;i<name.length;i++){
+				alert(name[i]['name']);
+			}
+		}
+		</script>
+	<script type="text/javascript">
+	
+	 var box = [
+	 	{
+	 		name:'11',
+	 		age:28
+	 	},
+	 	{
+	 		key:'22',
+	 		age:35
+	 	}
+	 ]
+	  aa('www.baidu.com',box);
+	 // alert(box[0]['age']);
+	</script>
+</head>
+<body>
+	111
+</body>
+</html>

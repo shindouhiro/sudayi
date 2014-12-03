@@ -10,7 +10,7 @@ var serverURL = 'http://www.phonegap100.com';
 */
 function setItem(key,data){
 	alert(key);
-	sessionStorage.setItem(key,data);
+	localStorage.setItem(key,data);
 }
 /*
 读取localstorage缓存
@@ -20,5 +20,5 @@ function setItem(key,data){
 function getItem(key){
 	// var a = localStorage.getItem(key)
 	// alert(a);
-	return sessionStorage.getItem(key);
+	return localStorage.getItem(key);
 }

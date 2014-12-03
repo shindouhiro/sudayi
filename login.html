@@ -196,50 +196,53 @@
 			})
 			// 注册
 			$("#res_submit").click(function(){
-				// $(".user").html("");
-				// $(".pwd").html("");
-				// $(".apwd").html("");
-				// $(".tel").html("");
-				// $(".email").html("");
-				// $ck_user=/\w{6,18}/;
-				// $ck_pwd=/\S{6,18}/;
-				// $ck_apwd=/\S{6,18}/;
-				// $ck_tel=/\d{11}/;
-				// $ck_email=/^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+((\.[a-zA-Z0-9_-]{2,3}){1,2})$/;
-				// $user=$("#user").val();
-				// $pwd=$("#pwd").val();
-				// $apwd=$("#apwd").val();
-				// $tel=$("#tel").val();
-				// $email=$("#email").val();
-				// if($ck_user.test($user)==false){
-				// 	$(".user").html("*账户不合法,不能使用特殊字符<br>");
-				// }
-				// if($ck_tel.test($tel)==false){
-				// 	$(".tel").html("*手机格式错误<br>");
-				// }
-				// if($ck_pwd.test($pwd)==false){
-				// 	$(".pwd").html("*密码设置错误。密码长度过小<br>");
-				// }
-				// if($ck_apwd.test($apwd)==false){
-				// 	$(".apwd").html("*密码设置错误。密码长度过小<br>");
-				// }
-				// if($pwd!=$apwd){
-				// 	$(".pwd").html("*密码输入不一致<br>");
-				// 	$(".apwd").html("*密码输入不一致<br>");
-				// }
-				// if($ck_email.test($email)==false){
-				// 	$(".email").html("*邮箱格式不符");
-				// }
-				// if($ck_user.test($user) && $ck_pwd.test($pwd) && $ck_apwd.test($apwd)  && $ck_tel.test($tel) && $pwd==$apwd){
-				// 	return false;
-				// }
-				var user = $("#user").val();
+				$(".user").html("");
+				$(".pwd").html("");
+				$(".apwd").html("");
+				$(".tel").html("");
+				$(".email").html("");
+				$(".way").html("");
+				$ck_user=/\w{6,18}/;
+				$ck_pwd=/\S{6,18}/;
+				$ck_apwd=/\S{6,18}/;
+				$ck_tel=/\d{11}/;
+				$ck_email=/^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+((\.[a-zA-Z0-9_-]{2,3}){1,2})$/;
+				$user=$("#user").val();
+				$pwd=$("#pwd").val();
+				$apwd=$("#apwd").val();
+				$tel=$("#tel").val();
+				$email=$("#email").val();
+				$way  = $(':radio[name="way"]:checked').val();
+				if($ck_user.test($user)==false){
+					$(".user").html("*账户不合法,不能使用特殊字符<br>");
+				}
+				if($ck_tel.test($tel)==false){
+					$(".tel").html("*手机格式错误<br>");
+				}
+				if($ck_pwd.test($pwd)==false){
+					$(".pwd").html("*密码设置错误。密码长度过小<br>");
+				}
+				if($ck_apwd.test($apwd)==false){
+					$(".apwd").html("*密码设置错误。密码长度过小<br>");
+				}
+				if($pwd!=$apwd){
+					$(".pwd").html("*密码输入不一致<br>");
+					$(".apwd").html("*密码输入不一致<br>");
+				}
+				if($ck_email.test($email)==false){
+					$(".email").html("*邮箱格式不符");
+				}
+				if($way==null){
+					$(".way").html("*请选择其一");
+				}
+				if($ck_user.test($user) && $ck_pwd.test($pwd) && $ck_apwd.test($apwd)  && $ck_tel.test($tel) && $pwd==$apwd){
+					var user = $("#user").val();
 				var tel  = $("#tel").val();
 				var pwd  = $("#pwd").val();
 				var apwd = $("#apwd").val();
 				var email = $("#email").val();
 				var way  = $(':radio[name="way"]:checked').val();
-				// var url2 ='http://www.29mins.com/mobile_admin/mobile_login/create_account?user='+user+'&tel='+tel+'&pwd='+pwd+'&apwd='+apwd+'way='+way+'';
+				var url2 ='http://www.29mins.com/mobile_admin/mobile_login/create_account?user='+user+'&tel='+tel+'&pwd='+pwd+'&apwd='+apwd+'way='+way+'';
 				$.get('http://www.29mins.com/mobile_admin/mobile_login/create_account?user='+user+'&tel='+tel+'&pwd='+pwd+'&apwd='+apwd+'&way='+way+'&email='+email+'',function(data){
 					var obj = JSON.parse(data);
 					var type=obj.admin_type;
@@ -248,14 +251,18 @@
 						var id = obj._id;
 						setItem('u_id',id);
 						setItem('jump',1);
+						$.ui.loadContent("#verify");
 						
 					}else if(type==2){
 						var id = obj._id;
 						setItem('u_id',id);
 						setItem('jump',2);
+						$.ui.loadContent("#verify");
 					}
 					
 				})
+				}
+				
 			})
 			// 验证码
 			$("#code_submit").click(function(){
@@ -266,21 +273,61 @@
 					$.ui.loadContent("#agency_intro");
 				}
 			})
-			$("#pp_submit").click(function(){
-				var id=getItem('u_id');
-				alert(id);
-				var test = $("#test").val();
-				alert(test);
-				$.post('http://www.29mins.com/mobile_admin/mobile_login/update_account_url',{userid:id,url:test},function(data){
+			
+			$.get('http://www.29mins.com/mobile_admin/mobile_login/get_province_in_china',function(data){
 					var obj = JSON.parse(data);
-					alert(obj);
+					var str = "";
+					for(var i=0;i<obj.length;i++){
+						str += '<option value='+obj[i]['_id']+'>'+obj[i]['name']+'</option>';
+					
+					}
+						$("#p_province").append(str);
+				})
+			$("#p_province").change(function(){
+				var id = $(this).val();
+				$("#p_city").html("");
+				$.get('http://www.29mins.com/mobile_admin/mobile_login/get_province_id?province_id='+id+'',function(data){
+					var obj = JSON.parse(data);
+					var str = "";
+					str += '<option >请选择</option>';
+					for(var i=0;i<obj.length;i++){
+
+						str += '<option value='+obj[i]['_id']+'>'+obj[i]['name']+'</option>';
+					}	
+					$("#p_city").append(str);
 				})
 			})
-		
+			$("#p_city").change(function(){
+				var id = $(this).val();
+				$("#p_area").html("");
+				$.get('http://www.29mins.com/mobile_admin/mobile_login/get_city_id?city_id='+id+'',function(data){
+					var obj = JSON.parse(data);
+					var str = "";
+					str += '<option >请选择</option>';
+					for(var i=0;i<obj.length;i++){
+						
+						str += '<option value='+obj[i]['_id']+'>'+obj[i]['name']+'</option>';
+					}	
+					$("#p_area").append(str);
+				})
+			})
+			// $("#pp_submit").click(function(){
+			// 	var id=getItem('u_id');
+			// 	 var p_principal=$("#p_principal").val();
+	  //            var p_email=$("#p_email").val();
+	  //            var p_iden=$("#p_iden").val();
+	  //            var p_province=$("#p_province").val();
+	  //            var p_city=$("#p_city").val();
+	  //            var p_area=$("#p_area").val();
+			// 	$.post('http://www.29mins.com/mobile_admin/mobile_login/update_account_url',{userid:id,p_principal:p_principal,p_email:p_email,p_iden:p_iden,p_province:p_province,p_city:p_city,p_area:p_area},function(data){
+			// 		var obj = JSON.parse(data);
+			// 		alert(obj);
+			// 	})
+			// })
 		})
 </script>
-<!-- <script type="text/javascript" src="js/cordova.js"></script> -->
-<!-- <script type="text/javascript" src="js/pc_upload.js"></script>
+<!-- <script type="text/javascript" src="js/cordova.js"></script>
+<script type="text/javascript" src="js/pc_upload.js"></script>
 <script type="text/javascript" src="js/pp_upload.js"></script> -->
 </head>
 <body>
@@ -327,7 +374,8 @@
 				    <label class="" for="agent">代理商-加盟速达易配送网</label>
 				    <br style="clear:both"></br>
 				</div>
-				<a href="#verify" class="button block" id="res_submit">注册</a>
+				<p class="way col"></p>
+				<a  class="button block" id="res_submit">注册</a>
 				<a class="button block">其他方式注册</a>
 			</form>
 		</div>
@@ -579,23 +627,19 @@
 		<div id="provider_personage" class="panel"  title="速达易"   data-header="pul_header">
 			 <form style="margin-top:20px;">
 		      <div class="input-group">
-		        <input type="text" placeholder="负责人">
-		        <input type="text" placeholder="邮箱">
-		        <input type="text" placeholder="身份证号码">
+		        <input type="text" placeholder="负责人" id="p_principal">
+		        <input type="text" placeholder="邮箱" id="p_email">
+		        <input type="text" placeholder="身份证号码" id="p_iden">
 		        <input type="hidden" name="">
-		        <select name="" id="">
-		        	<option value="">请选择</option>
-		        	<option value="">广东省</option>
+		        <select name="" id="p_province">
+		        	<option value="" class="p_province">请选择</option>
 		        </select>
-		        <select name="" id="">
-		        	<option value="">请选择</option>
-		        	<option value="">深圳市</option>
+		        <select name="" id="p_city">
+		        	<option value="" class="p_city">请选择</option>
 		        </select>
-		        <select name="" id="">
-		        	<option value="">请选择</option>
-		        	<option value="">福田区</option>
+		        <select name="" id="p_area">
+		        	<option value="" class="p_area">请选择</option>
 		        </select>
-		        <input type="file" name="pic" id="test">
 		        <a class="button block" id="pp_iden">身份证上传</a>
 		        <div class="pp_iden"></div>
 		        <input type="hidden" name="pp_idens" id="pp_idens"/>
@@ -650,10 +694,39 @@
 			<a href="#agency_chose" class="button block">下一步</a>
 		</div>
 		<!-- 代理商介绍 -->
-		agency_intro.html
+<script type="text/javascript">
+	function showPopupchose() {
+				$("#afui").popup({
+					title: "请选择地区",
+					message: "<select name='' id=''><option value=''>请选择</option><option value=''>广东省</option></select><select name='' id=''><option value=''>请选择</option><option value=''>深圳市</option></select><select name='' id=''><option value=''>请选择</option><option value=''>福田区</option></select>",
+					cancelText: "取消",
+					cancelCallback: function () {},
+					doneText: "确定",
+					doneCallback: function () {
+						//处理登录的一些操作
+						$.ui.loadContent("#agency_area");
+					},
+					cancelOnly: false
+				});
+			}
+			function showPopupchose2() {
+				$("#afui").popup({
+					title: "请选择地区",
+					message: "<select name='' id=''><option value=''>请选择</option><option value=''>深圳市</option><option value=''>广州市</option><option value=''>东莞市</option></select>",
+					cancelText: "取消",
+					cancelCallback: function () {},
+					doneText: "确定",
+					doneCallback: function () {
+						//处理登录的一些操作
+						$.ui.loadContent("#agency_city");
+					},
+					cancelOnly: false
+				});
+			}
+</script>		
 		<!-- 代理商 -->
 		<div id="agency_chose" class="panel"  title="速达易"   data-header="pul_header">
-			<a href="#agency_area">
+			<a href="javascript:showPopupchose();">
 					<ul class="list inset" style="margin-top:20px;">
 							<li>
 								<strong class="title">申请加盟区代理</strong>
@@ -665,7 +738,8 @@
 							</li>
 					</ul>
 				</a>
-				<a href="#agency_city">
+				<!--  -->
+				<a href="javascript:showPopupchose2();">
 					<ul class="list inset" style="margin-top:20px;">
 							<li>
 								<strong class="title">申请加盟市代理</strong>
@@ -967,6 +1041,11 @@
 
 		</div>
 		<!-- 保障结束 -->
+		<!-- 审核 -->
+		<div id="audit" class="panel"  title="速达易"   data-header="pul_header" style="text-align:center;">
+			<p>速达易正在审核您的资料，预计在2小时内通知您结果。以下是您上传的信息及资料:</p>	
+		</div>
+		<!-- 审核结束 -->
 	<header id="pul_header">
 		<h1>速达易</h1>
 		<a id="backButton" onclick="$.ui.goBack()" class="button" style="visibility: visible;">返回</a>
