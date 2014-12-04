@@ -9,7 +9,7 @@ var serverURL = 'http://www.phonegap100.com';
  * @param data
 */
 function setItem(key,data){
-	alert(key);
+	// alert(key);
 	localStorage.setItem(key,data);
 }
 /*

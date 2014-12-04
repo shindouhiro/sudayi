@@ -96,6 +96,7 @@
         <script type="text/javascript" charset="utf-8" src="./plugins/af.slidemenu.js"></script>
         
 		<script type="text/javascript" src="js/common.js"></script>
+		<script type="text/javascript" src="js/function.js"></script>
         <script type="text/javascript">
             /* This function runs once the page is loaded, but intel.xdk is not yet active */
             //$.ui.animateHeaders=false;
@@ -281,7 +282,9 @@
 						str += '<option value='+obj[i]['_id']+'>'+obj[i]['name']+'</option>';
 					
 					}
+					// alert(str);
 						$("#p_province").append(str);
+						$("#c_province").append(str);
 				})
 			$("#p_province").change(function(){
 				var id = $(this).val();
@@ -310,20 +313,38 @@
 					}	
 					$("#p_area").append(str);
 				})
+
 			})
-			// $("#pp_submit").click(function(){
-			// 	var id=getItem('u_id');
-			// 	 var p_principal=$("#p_principal").val();
-	  //            var p_email=$("#p_email").val();
-	  //            var p_iden=$("#p_iden").val();
-	  //            var p_province=$("#p_province").val();
-	  //            var p_city=$("#p_city").val();
-	  //            var p_area=$("#p_area").val();
-			// 	$.post('http://www.29mins.com/mobile_admin/mobile_login/update_account_url',{userid:id,p_principal:p_principal,p_email:p_email,p_iden:p_iden,p_province:p_province,p_city:p_city,p_area:p_area},function(data){
-			// 		var obj = JSON.parse(data);
-			// 		alert(obj);
-			// 	})
-			// })
+			//企业供应省市区
+			$("#c_province").change(function(){
+				var id = $(this).val();
+				$("#c_city").html("");
+				$.get('http://www.29mins.com/mobile_admin/mobile_login/get_province_id?province_id='+id+'',function(data){
+					var obj = JSON.parse(data);
+					var str = "";
+					str += '<option >请选择</option>';
+					for(var i=0;i<obj.length;i++){
+
+						str += '<option value='+obj[i]['_id']+'>'+obj[i]['name']+'</option>';
+					}	
+					$("#c_city").append(str);
+				})
+			})
+			$("#c_city").change(function(){
+				var id = $(this).val();
+				$("#c_area").html("");
+				$.get('http://www.29mins.com/mobile_admin/mobile_login/get_city_id?city_id='+id+'',function(data){
+					var obj = JSON.parse(data);
+					var str = "";
+					str += '<option >请选择</option>';
+					for(var i=0;i<obj.length;i++){
+						
+						str += '<option value='+obj[i]['_id']+'>'+obj[i]['name']+'</option>';
+					}	
+					$("#c_area").append(str);
+				})
+			})
+			//企业供应省市区结束
 		})
 </script>
 <!-- <script type="text/javascript" src="js/cordova.js"></script>
@@ -656,17 +677,14 @@
 		        <input type="text" placeholder="邮箱">
 		        <input type="text" placeholder="身份证号码">
 		        <input type="hidden" name="">
-		        <select name="" id="">
-		        	<option value="">请选择</option>
-		        	<option value="">广东省</option>
+		        <select name="" id="c_province">
+		        	<option value="" class="c_province">请选择</option>
 		        </select>
-		        <select name="" id="">
-		        	<option value="">请选择</option>
-		        	<option value="">深圳市</option>
+		        <select name="" id="c_city">
+		        <option value="" class="c_city">请选择</option>
 		        </select>
-		        <select name="" id="">
-		        	<option value="">请选择</option>
-		        	<option value="">福田区</option>
+		        <select name="" id="c_area">
+		        <option value="" class="c_area">请选择</option>
 		        </select>
 		         <select name="" id="">
 		        	<option value="">请选择公司类型</option>
@@ -1043,7 +1061,10 @@
 		<!-- 保障结束 -->
 		<!-- 审核 -->
 		<div id="audit" class="panel"  title="速达易"   data-header="pul_header" style="text-align:center;">
-			<p>速达易正在审核您的资料，预计在2小时内通知您结果。以下是您上传的信息及资料:</p>	
+			<div>
+				<ul class="list" id="audi">
+				</ul>
+			</div>	
 		</div>
 		<!-- 审核结束 -->
 	<header id="pul_header">

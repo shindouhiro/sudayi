@@ -35,6 +35,7 @@
 		margin-top: 2%;
 		border-radius: 30px;
 	}
+
 	#afui input[type="radio"] + label{
 		float: left;
 		margin-left: 10%;
