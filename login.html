@@ -177,7 +177,11 @@
 				var user = $("#user").val();
 				$.get('http://www.29mins.com/mobile_admin/mobile_login/judge_same_username?username='+user+'',function(data){
 					var obj = JSON.parse(data);
-					// alert(obj);
+					if(user){
+						if(obj==0){
+							$("")
+						}
+					}
 				})
 			})
 			// 手机
@@ -287,16 +291,15 @@
 						$("#c_province").append(str);
 				})
 			//获取企业类型
-			$.get('http://www.29mins.com/mobile_admin/mobile_login/get_firm_type',function(data){
-					var obj = JSON.parse(data);
-					var str = "";
-					for(var i=0;i<obj.length-1;i++){
-						str += '<option value='+obj[i]['_id']+'>'+obj[i]['name']+'</option>';
+			 $.get('http://www.29mins.com/mobile_admin/mobile_login/get_firm_type',function(data){
+			 		var obj = JSON.parse(data);
+			 		var str = "";
+			 		for(var i=0;i<obj.length-1;i++){
+			 			str += '<option value='+obj[i]['_id']+'>'+obj[i]['name']+'</option>';
 					
-					}
-					// alert(str);
-						$("#c_type").append(str);
-				})
+			 		}
+			 			$("#c_type").append(str);
+			 	})
 			$("#p_province").change(function(){
 				var id = $(this).val();
 				$("#p_city").html("");
@@ -356,9 +359,17 @@
 				})
 			})
 			//企业供应省市区结束
+			//获取上传图片级别
+			$("#reshelf_menu").on('click','li',function(){
+				var level=$(this).find("strong").text();
+				alert(level);
+
+				$("#pic_level").text(level);
+			})
+			//获取上传图片级别结束
 		})
 </script>
-<!-- <script type="text/javascript" src="js/cordova.js"></script>
+ <!--<script type="text/javascript" src="js/cordova.js"></script>
 <script type="text/javascript" src="js/pc_upload.js"></script>
 <script type="text/javascript" src="js/pp_upload.js"></script> -->
 </head>
@@ -453,13 +464,13 @@
 			</div>
 			<ul id="banner_menu">
 				<li><a href="#reshelf">快速上货</a></li>
-				<li><a href="">店铺管理</a></li>
-				<li><a href="">我的订单</a></li>
-				<li><a href="">仓库管理</a></li>
-				<li><a href="">我的消息</a></li>
-				<li><a href="">素材管理</a></li>
-				<li><a href="">查看店铺</a></li>
-				<li><a href="">员工管理</a></li>
+				<li><a>店铺管理</a></li>
+				<li><a>我的订单</a></li>
+				<li><a>仓库管理</a></li>
+				<li><a>我的消息</a></li>
+				<li><a>素材管理</a></li>
+				<li><a>查看店铺</a></li>
+				<li><a>员工管理</a></li>
 			</ul>
 		</div>
 		<!-- 供应商个人中心结束 -->
@@ -508,10 +519,13 @@
 		<!-- 上货区 -->
 		<div id="loading_area" class="panel"  title="速达易" data-footer="pul_footer"  data-header="pul_header">
 			<ul class="list" style="text-align:center">
-				<li>A级图</li>
-				<li><a class="icon add ">横幅广告</a></li>
-				<li><a class="icon add ">封面图片</a></li>
-				<li><a class="icon add ">商品细节</a></li>
+				<li id="pic_level">A级图</li>
+				<li id="adv"><a class="icon add ">横幅广告</a></li>
+				<div class="adv"></div>
+				<li id="cover"><a class="icon add " >封面图片</a></li>
+				<div class="cover"></div>
+				<li id="detail"><a class="icon add ">商品细节</a></li>
+				<div class="detail"></div>
 			</ul>
 			<form style="margin-top:10px;">
 		      <select name="" id="">
@@ -521,7 +535,7 @@
 		      </select>
 		      <input type="text" placeholder="名称">
 		      <input type="text" placeholder="描述">
-		      <a class="button block" href="#loading_detail">上传</a>
+		      <a class="button block" id="loading_submit">上传</a>
 		    </form>
 		</div>
 		<!-- 上货区结束 -->
@@ -534,11 +548,11 @@
 					<a class="icon picture  button block">上传图片</a>
 				</div>
 			</form>
-			<footer>
+<!--			<footer>
 				<a id="pic_add" class="icon add"></a>
 				<a id="pic_remove" class="icon remove"></a>
 				<a class="icon upload" href="#chose_way"></a>
-			</footer>
+			</footer>-->
 		</div>
 		<!-- 上货细节结束 -->
 		<!-- 选择方式 -->
@@ -1095,7 +1109,7 @@
 	$(function () {
 			$("#pic_add").click(function(){
 			$add="<div class='picture'><input type='text' name='' id='' placeholder='规格'><input type='text' name='' id='' placeholder='价格'><a class='icon picture  button block'>上传图片</a></div>";
-			$("#detail").append($add);
+			// $("#detail").append($add);
 			})
 			$("#pic_remove").click(function(){
 				$("div[class=picture]:last").remove();

@@ -3,13 +3,14 @@
 	});	
 	function myDeviceReadyListener(){
 		$('#pp_iden').click(function(){
- 			navigator.camera.getPicture(onSuccess1, onFail, { 
-				quality: 70,
-			    destinationType: Camera.DestinationType.FILE_URL, //以文件地址返回url
-			    // sourceType:Camera.PictureSourceType.Camera,
-			    sourceType:Camera.PictureSourceType.PHOTOLIBRARY,
-			   // mediaType:Camera.MediaType.VIDEO,
-			}); 			
+		alert(123);
+ 			//navigator.camera.getPicture(onSuccess1, onFail, { 
+//				quality: 70,
+//			    destinationType: Camera.DestinationType.FILE_URL, //以文件地址返回url
+//			    // sourceType:Camera.PictureSourceType.Camera,
+//			    sourceType:Camera.PictureSourceType.PHOTOLIBRARY,
+//			   // mediaType:Camera.MediaType.VIDEO,
+//			}); 			
  		})
 	}
 	function onSuccess1(imageURI){
@@ -33,7 +34,7 @@
 $(function(){
 	$("#pp_submit").click(function(){
 		
-		var imageURI=$(".pp_idens").attr('src');
+		var imageURI=$(".pp_idens").attr('src')
 		 var options = new FileUploadOptions();
           options.fileKey="url";
            options.fileName=imageURI.substr(imageURI.lastIndexOf('/')+1);
@@ -56,7 +57,7 @@ $(function(){
            	options.params = params;
            var ft = new FileTransfer();
            ft.upload(imageURI, encodeURI("http://www.29mins.com/mobile_admin/mobile_login/update_account_url"), win, fail, options);
-           var url2='http://www.29mins.com/mobile_admin/mobile_login/get_account_credit?userid='+id;
+          // var url2='http://www.29mins.com/mobile_admin/mobile_login/get_account_credit?userid='+id;
         
            //获取状态值
 		  var url='http://www.29mins.com/mobile_admin/mobile_login/get_account_credit?userid='+id;
