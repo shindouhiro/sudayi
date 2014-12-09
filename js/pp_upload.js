@@ -3,24 +3,22 @@
 	});	
 	function myDeviceReadyListener(){
 		$('#pp_iden').click(function(){
-		alert(123);
- 			//navigator.camera.getPicture(onSuccess1, onFail, { 
-//				quality: 70,
-//			    destinationType: Camera.DestinationType.FILE_URL, //以文件地址返回url
+ 			    navigator.camera.getPicture(onSuccess, onFail, { 
+				quality: 70,
+			    destinationType: Camera.DestinationType.FILE_URL, //以文件地址返回url
 //			    // sourceType:Camera.PictureSourceType.Camera,
-//			    sourceType:Camera.PictureSourceType.PHOTOLIBRARY,
+			    sourceType:Camera.PictureSourceType.PHOTOLIBRARY,
 //			   // mediaType:Camera.MediaType.VIDEO,
-//			}); 			
+			}); 			
  		})
 	}
-	function onSuccess1(imageURI){
+	function onSuccess(imageURI){
 		$condition=$(".pp_idens").attr('src');
 		if($condition==undefined){
 		$width=$("#content").width();
 		$img="<img src='"+imageURI+"' width='"+$width+"' height='100' class='pp_idens'/>";
-		$(".pp_iden").append($img);
 		alert($img);
-		$("#pp_idens").val(imageURI);
+		$(".pp_iden").append($img);
 		}else{
 			alert("只允许上传一张图片");
 		}

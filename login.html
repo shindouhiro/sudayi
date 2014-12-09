@@ -97,6 +97,7 @@
         
 		<script type="text/javascript" src="js/common.js"></script>
 		<script type="text/javascript" src="js/function.js"></script>
+		<script type="text/javascript" src="js/getid.js"></script>
         <script type="text/javascript">
             /* This function runs once the page is loaded, but intel.xdk is not yet active */
             //$.ui.animateHeaders=false;
@@ -177,11 +178,11 @@
 				var user = $("#user").val();
 				$.get('http://www.29mins.com/mobile_admin/mobile_login/judge_same_username?username='+user+'',function(data){
 					var obj = JSON.parse(data);
-					if(user){
-						if(obj==0){
-							$("")
-						}
-					}
+					// if(user){
+					// 	if(obj==0){
+					// 		$("")
+					// 	}
+					// }
 				})
 			})
 			// 手机
@@ -359,6 +360,33 @@
 				})
 			})
 			//企业供应省市区结束
+			//获取根
+			$.get('http://www.29mins.com/product_uploader/get_root',function(data){
+					var obj = JSON.parse(data);
+					var str = "";
+					for(var i=0;i<obj.length;i++){
+						str += '<option value='+obj[i]['_id']+'>'+obj[i]['name']+'</option>';
+					}
+					$("#root").append(str);
+				})
+			//获取根下的分类
+				getid('root',0);
+
+			
+			// }
+			// $("#root").change(function(){
+			// 	var id = $(this).val();
+			// 	$.get('http://www.29mins.com/product_uploader/get_nodes?cate_id='+id+'',function(data){
+			// 		var obj = JSON.parse(data);
+			// 		var str = "";
+			// 		str+= '<select id='catalog'>'
+			// 		for(var i=0;i<obj.length;i++){
+			// 			str+= '<option value='+obj[i]['_id']+'>'+obj[i]['name']+'</option>';
+			// 		}
+			// 		str+='</select>';
+			// 		$("#pic_type").append(str);
+			// 	})
+			// })
 			//获取上传图片级别
 			$("#reshelf_menu").on('click','li',function(){
 				var level=$(this).find("strong").text();
@@ -369,9 +397,10 @@
 			//获取上传图片级别结束
 		})
 </script>
- <!--<script type="text/javascript" src="js/cordova.js"></script>
+<!--<script type="text/javascript" src="js/cordova.js"></script>
 <script type="text/javascript" src="js/pc_upload.js"></script>
-<script type="text/javascript" src="js/pp_upload.js"></script> -->
+<script type="text/javascript" src="js/pp_upload.js"></script>
+<script type="text/javascript" src="js/goods.js"></script>-->
 </head>
 <body>
 	<div id="afui" class="bb">
@@ -519,7 +548,7 @@
 		<!-- 上货区 -->
 		<div id="loading_area" class="panel"  title="速达易" data-footer="pul_footer"  data-header="pul_header">
 			<ul class="list" style="text-align:center">
-				<li id="pic_level">A级图</li>
+				<li id="pic_level">A</li>
 				<li id="adv"><a class="icon add ">横幅广告</a></li>
 				<div class="adv"></div>
 				<li id="cover"><a class="icon add " >封面图片</a></li>
@@ -528,13 +557,14 @@
 				<div class="detail"></div>
 			</ul>
 			<form style="margin-top:10px;">
-		      <select name="" id="">
-		      		<option value="">请选择分类</option>
-		      		<option value="">请选择分类</option>
+		      <select name="" id="root">
 		      		<option value="">请选择分类</option>
 		      </select>
-		      <input type="text" placeholder="名称">
-		      <input type="text" placeholder="描述">
+		      <div id="pic_type">
+		      	
+		      </div>
+		      <input type="text" placeholder="名称" id="goods_name">
+		      <input type="text" placeholder="描述" id="goods_description">
 		      <a class="button block" id="loading_submit">上传</a>
 		    </form>
 		</div>

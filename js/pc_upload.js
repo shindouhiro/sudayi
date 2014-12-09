@@ -77,9 +77,7 @@ $(function(){
 
             var ft = new FileTransfer();
             ft.upload(imageURI, encodeURI("http://www.29mins.com/mobile_admin/mobile_login/update_account_url"), win, fail, options);
-          
             
-          //  ft.upload(imageURI2, encodeURI("http://www.29mins.com/mobile_admin/mobile_login/update_account_2url"), win, fail, options);
            
 	})
 	 function win(r) {
