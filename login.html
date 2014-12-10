@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <!--HTML5 doctype-->
 <html>
-
     <head>
         <script>
         (function() {
@@ -361,6 +360,7 @@
 			})
 			//企业供应省市区结束
 			//获取根
+			var k=0;
 			$.get('http://www.29mins.com/product_uploader/get_root',function(data){
 					var obj = JSON.parse(data);
 					var str = "";
@@ -371,9 +371,6 @@
 				})
 			//获取根下的分类
 				getid('root',0);
-
-			
-			// }
 			// $("#root").change(function(){
 			// 	var id = $(this).val();
 			// 	$.get('http://www.29mins.com/product_uploader/get_nodes?cate_id='+id+'',function(data){
@@ -394,13 +391,22 @@
 
 				$("#pic_level").text(level);
 			})
-			//获取上传图片级别结束
+			//获取是否存在仓库
+			$.get('http://www.29mins.com/product_uploader/get_stores_by_account',function(data){
+					var obj = JSON.parse(data);
+					if(obj==""){
+						// alert(123);
+					}else{
+						// alert(321);
+					}
+			})
 		})
 </script>
-<!--<script type="text/javascript" src="js/cordova.js"></script>
+<!-- <script type="text/javascript" src="js/cordova.js"></script>
 <script type="text/javascript" src="js/pc_upload.js"></script>
 <script type="text/javascript" src="js/pp_upload.js"></script>
-<script type="text/javascript" src="js/goods.js"></script>-->
+<script type="text/javascript" src="js/goods.js"></script>
+<script type="text/javascript" src="js/detail.js"></script> -->
 </head>
 <body>
 	<div id="afui" class="bb">
@@ -550,7 +556,7 @@
 			<ul class="list" style="text-align:center">
 				<li id="pic_level">A</li>
 				<li id="adv"><a class="icon add ">横幅广告</a></li>
-				<div class="adv"></div>
+				<div class="adv" style="text-align:center"></div>
 				<li id="cover"><a class="icon add " >封面图片</a></li>
 				<div class="cover"></div>
 				<li id="detail"><a class="icon add ">商品细节</a></li>
@@ -571,18 +577,18 @@
 		<!-- 上货区结束 -->
 		<!-- 上货细节 -->
 		<div id="loading_detail" class="panel"  title="速达易"   data-header="pul_header">
-			<form action="" style="margin-top:10px;" id="detail">
-				<div class="picture">
+			<form action="" style="margin-top:10px;" id="details">
+				<div class="pictures">
 					<input type="text" name="" id="" placeholder="规格">
 					<input type="text" name="" id="" placeholder="价格">
-					<a class="icon picture  button block">上传图片</a>
+					<a class="icon picture  button block pic">添加图片</a>
 				</div>
 			</form>
-<!--			<footer>
-				<a id="pic_add" class="icon add"></a>
-				<a id="pic_remove" class="icon remove"></a>
-				<a class="icon upload" href="#chose_way"></a>
-			</footer>-->
+			<footer>
+				<a id="pic_add" class="icon add">加</a>
+				<a id="pic_remove" class="icon remove">减</a>
+				<a class="icon upload" id="detail_submit">上传</a>
+			</footer>
 		</div>
 		<!-- 上货细节结束 -->
 		<!-- 选择方式 -->
@@ -635,7 +641,7 @@
 				    <br class="clear">
 			    </div>
 			  
-			    <a href="#chose_time" class="button block">下一步</a>
+			    <a href="#chose_time" class="button block" style="margin-top:50px;">下一步</a>
 			</form>
 		</div>
 		<!-- 选择方式结束 -->
@@ -752,7 +758,7 @@
 		    </form>
 		</div>
 		<!-- 供应商企业认证结束 -->
-		<div id="agency_intro" class="panel"  title="速达易"   data-header="pul_header">
+		<div id="agency_intro" class="panel"  title="速达易"   data-header="pul_header" >
 			<h1 style="text-align:center;postion:fixed">代理商</h1>
 			<p style="font-size:16px;">这个按钮进入就让它上货！也就是进入ABCD图片选择那页，等他捣鼓完了才告诉他无法发布，因为没有认证！这个按钮进入就让它上货！也就是进入ABCD图片选择那页，等他捣鼓完了才告诉他无法发布，因为没有认证！这个按钮进入就让它上货！也就是进入ABCD图片选择那页，等他捣鼓完了才告诉他无法发布，因为没有认证！这个按钮进入就让它上货！也就是进入ABCD图片选择那页，等他捣鼓完了才告诉他无法发布，因为没有认证！这个按钮进入就让它上货！也就是进入ABCD图片选择那页，等他捣鼓完了才告诉他无法发布，因为没有认证！这个按钮进入就让它上货！也就是进入ABCD图片选择那页，等他捣鼓完了才告诉他无法发布，因为没有认证！这个按钮进入就让它上货！也就是进入ABCD图片选择那页，等他捣鼓完了才告诉他无法发布，因为没有认证！这个按钮进入就让它上货！也就是进入ABCD图片选择那页，等他捣鼓完了才告诉他无法发布，因为没有认证！这个按钮进入就让它上货！也就是进入ABCD图片选择那页，等他捣鼓完了才告诉他无法发布，因为没有认证！这个按钮进入就让它上货！也就是进入ABCD图片选择那页，等他捣鼓完了才告诉他无法发布，因为没有认证！这个按钮进入就让它上货！</p>
 			<div class="input-group">
@@ -1117,6 +1123,55 @@
 			</div>	
 		</div>
 		<!-- 审核结束 -->
+		<!-- 仓库添加 -->
+		<div id="warehouse_add" class="panel"  title="速达易"   data-header="pul_header" style="padding:0px;">
+		    <a class="button" href="#warehouse_detail" style="float:right;background:#0088D1;color:#fff;border-radius:20px;margin-right:10px;">添加仓库</a>
+		    <br style="clear:both;">
+			<table cellpadding="0" cellspacing="0" width="100%" style="margin-top:5px;" >
+				<tr>
+					<td>&nbsp;</td>
+					<td>仓库号</td>
+					<td>商品</td>
+					<td>联系人</td>
+					<td>建立日</td>
+					<td>操作</td>
+				</tr>
+				<tr class="gray">
+					<td>1</td>
+					<td>01010100001</td>
+					<td>25/15</td>
+					<td>Wangqiang</td>
+					<td>20141110</td>
+					<td>
+					<a class="icon error" style="color:#0088D1"></a>
+					<a class="icon pencil" style="color:#0088D1"></a>
+					</td>
+				</tr>
+				<tr class="gray">
+					<td colspan="6">广东省深圳市罗湖区春风路1003号美丽小店</td>
+				</tr>
+			</table>
+		</div>
+		<!-- 仓库添加结束 -->
+		<!-- warehouse_deital -->
+		<!-- 仓库明细 -->
+		<div id="warehouse_detail" class="panel"  title="速达易"   data-header="pul_header" >
+			<div class="input-group" style="margin-top:20px;">
+		        <input type="text" placeholder="名称">
+		        <select name="" id="warehouse_province">
+		        	<option value="">1</option>
+		        </select>
+		        <select name="" id="warehouse_city">
+		        	<option value="">1</option>
+		        </select>
+		        <select name="" id="warehouse_area">
+		        	<option value="">1</option>
+		        </select>
+		        <input type="text" name="" id="">
+		        <br>
+	      	</div>
+		</div>
+		<!-- 仓库明细结束 -->
 	<header id="pul_header">
 		<h1>速达易</h1>
 		<a id="backButton" onclick="$.ui.goBack()" class="button" style="visibility: visible;">返回</a>
@@ -1138,11 +1193,11 @@
 <script type="text/javascript">
 	$(function () {
 			$("#pic_add").click(function(){
-			$add="<div class='picture'><input type='text' name='' id='' placeholder='规格'><input type='text' name='' id='' placeholder='价格'><a class='icon picture  button block'>上传图片</a></div>";
-			// $("#detail").append($add);
+			$add="<div class='pictures'><input type='text' name='' id='' placeholder='规格'><input type='text' name='' id='' placeholder='价格'><a class='icon picture  button block pic'>添加图片</a></div>";
+			 $("#details").append($add);
 			})
 			$("#pic_remove").click(function(){
-				$("div[class=picture]:last").remove();
+				$("div[class=pictures]:last").remove();
 			})
 
 	        var currYear = (new Date()).getFullYear();  
