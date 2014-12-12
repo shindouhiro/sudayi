@@ -190,9 +190,28 @@
 		color:red;
 	}
 	/*warehouse_add*/
-	#afui #warehouse_add td{
+	#afui #warehouse_add td,#afui #warehouse_set td{
 		text-align: center;
 	}
 	#aufi  .gray{
 		background: red;
+	}
+	#afui #warehouse_detail #one_reminder{
+		height: 35px;
+		background: #0088D1;
+		color: #fff;
+		line-height: 35px;
+		text-align: center;
+	}
+	#afui #warehouse_detail .input-group p 	,#afui #warehouse_adding p{
+		border-bottom: 1px solid #eee;
+		text-indent: 10px;
+		background: #0088D1;
+		color: #fff;
+		margin:0;
+	}
+	#afui #warehouse_set input[type="checkbox"] + label:before {
+	position: absolute;
+	top: -5px;
+	left: -10px;
 	}

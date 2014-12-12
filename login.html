@@ -289,6 +289,7 @@
 					// alert(str);
 						$("#p_province").append(str);
 						$("#c_province").append(str);
+						$("#warehouse_province").append(str)
 				})
 			//获取企业类型
 			 $.get('http://www.29mins.com/mobile_admin/mobile_login/get_firm_type',function(data){
@@ -314,6 +315,21 @@
 					$("#p_city").append(str);
 				})
 			})
+
+			$("#warehouse_province").change(function(){
+				var id = $(this).val();
+				$("#warehouse_city").html("");
+				$.get('http://www.29mins.com/mobile_admin/mobile_login/get_province_id?province_id='+id+'',function(data){
+					var obj = JSON.parse(data);
+					var str = "";
+					str += '<option >请选择</option>';
+					for(var i=0;i<obj.length;i++){
+
+						str += '<option value='+obj[i]['_id']+'>'+obj[i]['name']+'</option>';
+					}	
+					$("#warehouse_city").append(str);
+				})
+			})
 			$("#p_city").change(function(){
 				var id = $(this).val();
 				$("#p_area").html("");
@@ -326,6 +342,21 @@
 						str += '<option value='+obj[i]['_id']+'>'+obj[i]['name']+'</option>';
 					}	
 					$("#p_area").append(str);
+				})
+
+			})
+			$("#warehouse_city").change(function(){
+				var id = $(this).val();
+				$("#warehouse_area").html("");
+				$.get('http://www.29mins.com/mobile_admin/mobile_login/get_city_id?city_id='+id+'',function(data){
+					var obj = JSON.parse(data);
+					var str = "";
+					str += '<option >请选择</option>';
+					for(var i=0;i<obj.length;i++){
+						
+						str += '<option value='+obj[i]['_id']+'>'+obj[i]['name']+'</option>';
+					}	
+					$("#warehouse_area").append(str);
 				})
 
 			})
@@ -342,6 +373,7 @@
 						str += '<option value='+obj[i]['_id']+'>'+obj[i]['name']+'</option>';
 					}	
 					$("#c_city").append(str);
+
 				})
 			})
 			$("#c_city").change(function(){
@@ -392,21 +424,16 @@
 				$("#pic_level").text(level);
 			})
 			//获取是否存在仓库
-			$.get('http://www.29mins.com/product_uploader/get_stores_by_account',function(data){
-					var obj = JSON.parse(data);
-					if(obj==""){
-						// alert(123);
-					}else{
-						// alert(321);
-					}
-			})
+			
 		})
 </script>
-<!-- <script type="text/javascript" src="js/cordova.js"></script>
+<!-- <script type="text/javascript" src="js/one.js"></script>
+<script type="text/javascript" src="js/cordova.js"></script>
 <script type="text/javascript" src="js/pc_upload.js"></script>
 <script type="text/javascript" src="js/pp_upload.js"></script>
 <script type="text/javascript" src="js/goods.js"></script>
-<script type="text/javascript" src="js/detail.js"></script> -->
+<script type="text/javascript" src="js/detail.js"></script> 
+<script type="text/javascript" src="js/warehouse_upload.js"></script>  -->
 </head>
 <body>
 	<div id="afui" class="bb">
@@ -584,11 +611,11 @@
 					<a class="icon picture  button block pic">添加图片</a>
 				</div>
 			</form>
-			<footer>
+<!--			<footer>
 				<a id="pic_add" class="icon add">加</a>
 				<a id="pic_remove" class="icon remove">减</a>
 				<a class="icon upload" id="detail_submit">上传</a>
-			</footer>
+			</footer>-->
 		</div>
 		<!-- 上货细节结束 -->
 		<!-- 选择方式 -->
@@ -793,6 +820,19 @@
 					doneCallback: function () {
 						//处理登录的一些操作
 						$.ui.loadContent("#agency_city");
+					},
+					cancelOnly: false
+				});
+			}
+			function showInfo(){
+				$("#afui").popup({
+					title: "联系人",
+					message: "<p>Xiaoming:1389999999</p><p>Liyue:1399000000</p>",
+					cancelText: "取消",
+					cancelCallback: function () {},
+					doneText: "确定",
+					doneCallback: function () {
+						//处理登录的一些操作
 					},
 					cancelOnly: false
 				});
@@ -1140,7 +1180,7 @@
 					<td>1</td>
 					<td>01010100001</td>
 					<td>25/15</td>
-					<td>Wangqiang</td>
+					<td onclick="showInfo()">Wangqiang</td>
 					<td>20141110</td>
 					<td>
 					<a class="icon error" style="color:#0088D1"></a>
@@ -1155,23 +1195,128 @@
 		<!-- 仓库添加结束 -->
 		<!-- warehouse_deital -->
 		<!-- 仓库明细 -->
-		<div id="warehouse_detail" class="panel"  title="速达易"   data-header="pul_header" >
-			<div class="input-group" style="margin-top:20px;">
-		        <input type="text" placeholder="名称">
+		<div id="warehouse_detail" class="panel"  title="速达易"   data-header="pul_header" data-footer="none">
+			<div class="input-group" style="margin-top:20px;padding:0;">
+				<p>仓库名称：</p>
+		        <input type="text" placeholder="仓库名称" id="warehouse_name">
+		        <p>地址：</p>
 		        <select name="" id="warehouse_province">
-		        	<option value="">1</option>
+		        	<option value="">请选择</option>
 		        </select>
 		        <select name="" id="warehouse_city">
-		        	<option value="">1</option>
+		        	<option value="">请选择</option>
 		        </select>
 		        <select name="" id="warehouse_area">
-		        	<option value="">1</option>
+		        	<option value="">请选择</option>
 		        </select>
-		        <input type="text" name="" id="">
-		        <br>
+		        <input type="text" name="" id="warehouse_address" placeholder="详细地址">
 	      	</div>
+	      	 <select name="" id="one">
+					<option value="">请选择方式</option>
+					<option value="" id="one_day">每日</option>
+					<option value="" id="one_week">每周</option>
+				</select>
+				<div class="one_week" style="display:none;">
+					<div class="input-group">
+					    <input id="One_Mon" type="checkbox" name="asdfasdf" value="1"><label for="One_Mon">星期一</label>
+					    <input id="One_Tue" type="checkbox" name="asdfasdf" value="2"><label for="One_Tue">星期二</label>
+					    <input id="One_Wed" type="checkbox" name="asdfasdf" value="3"><label for="One_Wed">星期三</label>
+					    <input id="One_Thu" type="checkbox" name="asdfasdf" value="4"><label for="One_Thu">星期四</label>
+					    <input id="One_Fri" type="checkbox" name="asdfasdf" value="5"><label for="One_Fri">星期五</label>
+					    <input id="One_Sta" type="checkbox" name="asdfasdf" value="6"><label for="One_Sta">星期六</label>
+					    <input id="One_Sun" type="checkbox" name="asdfasdf" value="7"><label for="One_Sun">星期日</label>
+					</div>    
+					<input type="time" name="" id="week_time" class="time">
+					<p style="text-align:center">至</p>
+					<input type="time" name="" id="week_time2" class="time">
+				</div>
+				<div class="one_day" style="display:none;">
+					<input type="time" name="" id="" class="time" id="day_time">
+					<p style="text-align:center">至</p>
+					<input type="time" name="" id="day_time2" class="time">
+				</div>
+				<div id="one_reminder">*至少上传一种地址证明(场地租赁合同)或(营业执照)</div>
+				<a class="button block" id="warehouse_reminder">上传</a>
+				<div class="warehouse_reminder" style="text-align:center;"></div>
+				<a class="button block" id="reminder_submit">下一步</a>
 		</div>
 		<!-- 仓库明细结束 -->
+<script type="text/javascript">
+	$(function(){
+		$("#ware_submit").click(function(){
+			alert(123);
+			var user=$("#ware_name").val();
+			var tel=$("#ware_tel").val();
+			var pwd=$("#ware_pwd").val();
+			var apwd=$("#ware_apwd").val();
+			var id = getItem('u_id');//获取userid
+			alert(id);
+			var email=$("#ware_email").val();
+			var url="http://www.29mins.com/mobile_admin/store_manager/new_account_in_charge";
+			alert(url);
+			 //  $.get(url,function(data){
+				// 		obj = JSON.parse(data);
+						
+          
+				// })
+			$.post(url,{uid:id,user:user,tel:tel,pwd:pwd,apwd:apwd,email:email},function(data){
+						
+          
+				})
+		})
+	})
+</script>		
+		<!-- 仓库人员添加 -->
+		<div id="warehouse_adding" class="panel"  title="速达易"   data-header="pul_header" data-footer="none" >
+			<div class="input-group" style="margin-top:20px;padding:0;">
+					<p>姓名：</p>
+			        <input type="text" placeholder="姓名" id="ware_name">
+			        <p>手机：</p>
+			        <input type="text" name="" id="ware_tel" placeholder="输入密码">
+			        <p>邮箱：</p>
+			        <input type="text" name="" id="ware_email" placeholder="输入密码">
+			        <p>密码</p>
+			        <input type="password" name="" id="ware_pwd" placeholder="输入密码">
+			        <p>再次输入密码</p>
+			        <input type="password" name="" id="ware_apwd" placeholder="再次输入密码">
+		    </div>
+		    <a class="button block"  id="ware_submit">提交</a>
+		</div>
+		<!-- 仓库人员添加结束 -->
+<script type="text/javascript">
+	$(function(){
+		var id = getItem('u_id');//获取userid
+		alert(id);
+		$.get('http://www.29mins.com/mobile_admin/store_manager/get_employees_by_account?uid='+id,function(data){
+					var obj = JSON.parse(data);
+					alert(obj);
+				})
+	})	
+</script>		
+		<!-- 仓库人员设置 -->
+		<div id="warehouse_set" class="panel"  title="速达易"   data-header="pul_header" data-footer="none" style="padding:0;">
+			<table cellpadding="0" cellspacing="0" width="100%">
+				<tr>
+					<td>&nbsp;</td>
+					<td>姓名</td>
+					<td>手机</td>
+					<td>密码</td>
+					<td>订单通知</td>
+					<td>主要联系人</td>
+				</tr>
+				<tr>
+					<td>1</td>
+					<td>王小明</td>
+					<td>13800138000</td>
+					<td>******</td>
+					<td><input id="ware_notice" name="asdfasdf" value="2" type="checkbox"><label for="ware_notice"></label></td>
+					<td><input id="ware_link" name="asdfasdf" value="2" type="checkbox"><label for="ware_link"></label></td>
+				</tr>
+			</table>
+			<a class="button" style="width:80%;display:block;margin:20px auto;" href="#warehouse_adding">添加管理员</a>
+			<a class="button" style="width:80%;display:block;margin:20px auto;">提交审核</a>
+		</div>
+		<!-- 仓库人员设置结束 -->
 	<header id="pul_header">
 		<h1>速达易</h1>
 		<a id="backButton" onclick="$.ui.goBack()" class="button" style="visibility: visible;">返回</a>

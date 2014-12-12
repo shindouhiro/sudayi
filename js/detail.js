@@ -51,7 +51,14 @@ $(function(){
 		})
 	})
 	 function win(r) {
-			alert("上传成功");
+			$.get('http://www.29mins.com/product_uploader/get_stores_by_account',function(data){
+					var obj = JSON.parse(data);
+					if(obj==""){
+						 $.ui.loadContent("#warehouse_add");
+					}else{
+						 $.ui.loadContent("#chose_way");
+					}
+			})
        }
 
         function fail(error) {
