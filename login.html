@@ -427,8 +427,8 @@
 			
 		})
 </script>
-<!-- <script type="text/javascript" src="js/one.js"></script>
-<script type="text/javascript" src="js/cordova.js"></script>
+<script type="text/javascript" src="js/one.js"></script>
+<!-- <script type="text/javascript" src="js/cordova.js"></script>
 <script type="text/javascript" src="js/pc_upload.js"></script>
 <script type="text/javascript" src="js/pp_upload.js"></script>
 <script type="text/javascript" src="js/goods.js"></script>
@@ -1251,6 +1251,7 @@
 			var apwd=$("#ware_apwd").val();
 			var id = getItem('u_id');//获取userid
 			alert(id);
+			alert(id);
 			var email=$("#ware_email").val();
 			var url="http://www.29mins.com/mobile_admin/store_manager/new_account_in_charge";
 			alert(url);
@@ -1285,17 +1286,31 @@
 		<!-- 仓库人员添加结束 -->
 <script type="text/javascript">
 	$(function(){
-		var id = getItem('u_id');//获取userid
+		var id = getItem('u_id');//l
 		alert(id);
 		$.get('http://www.29mins.com/mobile_admin/store_manager/get_employees_by_account?uid='+id,function(data){
 					var obj = JSON.parse(data);
-					alert(obj);
-				})
+					var str="";
+					for(var i=0;i<obj.length;i++){
+						var name_id=obj[i]['emp'];
+						$.get('http://www.29mins.com/mobile_admin/store_manager/get_account_by_id?employee_id='+name_id,function(data){
+							var obj = JSON.parse(data);
+							var name=obj.name;// 获取员工姓名
+							var mobile=obj.mobile;//获取手机号码
+							var pwd=obj.crypted_password; //获取密码
+							str +="<tr><td>1</td><td>"+name+"</td><td>"+mobile+"</td><td>******</td>";
+							str+="<td><input id='ware_notice' name='asdfasdf' value='2' type='checkbox'><label for='ware_notice'></label></td>";
+str+="<td><input id='ware_link' name='asdfasdf' value='2' type='checkbox'><label for='ware_link'></label></td></tr>";
+	alert(str);
+					$("#warehouse_content").append(str);
+						})
+					}
+		})
 	})	
 </script>		
 		<!-- 仓库人员设置 -->
 		<div id="warehouse_set" class="panel"  title="速达易"   data-header="pul_header" data-footer="none" style="padding:0;">
-			<table cellpadding="0" cellspacing="0" width="100%">
+			<table cellpadding="0" cellspacing="0" width="100%" id="warehouse_content">
 				<tr>
 					<td>&nbsp;</td>
 					<td>姓名</td>
