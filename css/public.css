@@ -1,4 +1,7 @@
 /*公共*/
+	*{
+		font-family: "微软雅黑 Bold","微软雅黑";
+	}
 	a{
 		text-decoration: none;
 	}
@@ -7,8 +10,8 @@
 	}
 	dd{
 		float: left;
-		margin-left: 10%;
 		height: 40px;
+		margin-left:2%;
 	}
 	.title{
 		color:red;
@@ -90,6 +93,125 @@
 		text-align:center;
 		text-shadow:0 -1px 0 rgba(64,0,0,.6);
 	}
+	#afui #personal_content{
+			color: black;
+			height: 150px;
+			margin: 10px auto;
+			/*background: #0068A6;*/
+		}
+		#afui #personal_left{
+			width: 80%;
+			height: 150px;
+			float: left;
+		}
+		#afui #personal_right{
+			width: 20%;
+			height: 150px;
+			float:left;
+			text-align: center;
+		}
+		#afui #personal_chose li{
+			text-indent: 20%;
+			height: 40px;
+			line-height: 40px;
+			border-bottom: 1px solid #eee;
+			color: #666666;
+		}
+		#afui #personal_chose li span{
+			font-size: 10px;
+			color:#999999;
+			margin-left: 20%;
+		}
+		#personal_info_box{
+			height: 100px;
+			border-bottom: 1px solid #eee;
+			border-top:1px solid #eee;
+			position: relative;
+		}
+		#afui #personal_info li{
+			margin-top: 10px;
+			width: 50%;
+			float: left;
+			height: 80px;
+			text-align: center;
+			line-height: 40px;
+		}
+
+		#afui #personal_info li span{
+			font-size: 10px;
+			color:#999999;
+		}
+		#afui #personal_info #new_info{
+			display: block;
+			margin-top:10px;
+		}
+		#afui #personal_info #new_order{
+			display: block;
+			margin-top:10px;
+		}
+		#afui #user_personal li:hover{
+			background: #76ADDE;
+			color: #fff;
+		} 
+		#personal_right  button:first-child{
+			margin-top: 10px;
+		}
+		#afui #personal_left_top{
+			display: block;
+			height: 100px;
+			margin: 0;
+		}
+		#afui #persoanl_right_bottom{
+			height: 50px;
+			margin: 0;
+		}
+		#afui #personal_left_top img{
+			width: 60px;
+			height: 60px;
+			border-radius: 50px;
+			margin-left: 10px;
+			margin-top: 20px;
+			border:2px solid #878787;
+		}
+		#afui #personal_left_top_pic{
+			width: 20%;
+		}
+		#afui #personal_left_top span{
+			/*color: #fff;*/
+			display: block;
+			float: left;
+			text-align: center;
+		}
+		#afui #personal_left_top .seven{
+			width: 70%;
+		}
+		#afui #personal_left_top span:nth-child(2){
+			margin-top: 20px;
+		}
+		#afui #persoanl_right_bottom span{
+			display: block;
+			float: left;
+			text-align: center;
+			/*color: #fff;*/
+		}
+		#afui #persoanl_right_bottom span:first-child{
+			height: 50px;
+			line-height: 50px;
+			width: 20%;
+			border-right: 1px solid #999999;
+			font-weight: bold;
+		}
+		#afui #persoanl_right_bottom .eight{
+			margin-top: 5px;
+			width: 80%;
+			text-indent: 20px;
+			text-align: left;
+			font-weight: bold;
+		}
+		#afui #persoanl_right_bottom .eighter{
+			font-size: 11px;
+			font-weight: none;
+		}
 
 	#afui .listview li a img{	
 		
@@ -190,7 +312,7 @@
 		color:red;
 	}
 	/*warehouse_add*/
-	#afui #warehouse_add td,#afui #warehouse_set td{
+	#afui #warehouse_add td,#afui #warehouse_set td,#employee_manager td{
 		text-align: center;
 	}
 	#aufi  .gray{
@@ -203,15 +325,143 @@
 		line-height: 35px;
 		text-align: center;
 	}
-	#afui #warehouse_detail .input-group p 	,#afui #warehouse_adding p{
+	#afui #warehouse_detail .input-group p 	,#afui #warehouse_adding p,#afui #employee_add .input-group p,#afui #loading_detail .input-group p{
 		border-bottom: 1px solid #eee;
 		text-indent: 10px;
 		background: #0088D1;
 		color: #fff;
 		margin:0;
 	}
-	#afui #warehouse_set input[type="checkbox"] + label:before {
-	position: absolute;
+	#afui #warehouse_set input[type="checkbox"] + label:before,#afui #warehouse_set input[type="raio"] + label:before {
+	/*position: absolute;
 	top: -5px;
-	left: -10px;
+	left: -10px;*/
+	margin-left: 20px;
+	margin-top:-10px;
 	}
+	#afui #warehouse_set input[type="radio"]:not(.toggle) + label:before {
+    margin-left: 20px;
+	margin-top:-10px;
+	}
+	#afui .shut_out{
+		height: 50px;
+	}
+	#afui #personal_content{
+			color: black;
+			height: 150px;
+			margin: 10px auto;
+			/*background: #0068A6;*/
+		}
+		#afui #personal_left{
+			width: 80%;
+			height: 150px;
+			float: left;
+		}
+		#afui #personal_right{
+			width: 20%;
+			height: 150px;
+			float:left;
+			text-align: center;
+		}
+		#afui #personal_chose li{
+			text-indent: 20%;
+			height: 40px;
+			line-height: 40px;
+			border-bottom: 1px solid #eee;
+			color: #666666;
+		}
+		#afui #personal_chose li span{
+			font-size: 10px;
+			color:#999999;
+			margin-left: 20%;
+		}
+		#personal_info_box{
+			height: 100px;
+			border-bottom: 1px solid #eee;
+			border-top:1px solid #eee;
+			position: relative;
+		}
+		#afui #personal_info li{
+			margin-top: 10px;
+			width: 50%;
+			float: left;
+			height: 80px;
+			text-align: center;
+			line-height: 40px;
+		}
+
+		#afui #personal_info li span{
+			font-size: 10px;
+			color:#999999;
+		}
+		#afui #personal_info #new_info{
+			display: block;
+			margin-top:10px;
+		}
+		#afui #personal_info #new_order{
+			display: block;
+			margin-top:10px;
+		}
+		#afui #user_personal li:hover{
+			background: #76ADDE;
+			color: #fff;
+		} 
+		#personal_right  button:first-child{
+			margin-top: 10px;
+		}
+		#afui #personal_left_top{
+			display: block;
+			height: 100px;
+			margin: 0;
+		}
+		#afui #persoanl_right_bottom{
+			height: 50px;
+			margin: 0;
+		}
+		#afui #personal_left_top img{
+			width: 60px;
+			height: 60px;
+			border-radius: 50px;
+			margin-left: 10px;
+			margin-top: 20px;
+			border:2px solid #878787;
+		}
+		#afui #personal_left_top_pic{
+			width: 20%;
+		}
+		#afui #personal_left_top span{
+			/*color: #fff;*/
+			display: block;
+			float: left;
+			text-align: center;
+		}
+		#afui #personal_left_top .seven{
+			width: 70%;
+		}
+		#afui #personal_left_top span:nth-child(2){
+			margin-top: 20px;
+		}
+		#afui #persoanl_right_bottom span{
+			display: block;
+			float: left;
+			text-align: center;
+			/*color: #fff;*/
+		}
+		#afui #persoanl_right_bottom span:first-child{
+			height: 50px;
+			line-height: 50px;
+			width: 20%;
+			border-right: 1px solid #999999;
+			font-weight: bold;
+		}
+		#afui #persoanl_right_bottom .eight{
+			margin-top: 5px;
+			width: 80%;
+			text-indent: 20px;
+			text-align: left;
+			font-weight: bold;
+		}
+		#afui #persoanl_right_bottom .eighter{
+			font-size: 11px;
+			font-weight: none;
+		}

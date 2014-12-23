@@ -1,7 +1,7 @@
 // JavaScript Document
 
 //网站的主域名
-var serverURL = 'http://www.phonegap100.com';
+// var serverURL = 'http://www.phonegap100.com';
 
 /*
 写入loclstorage缓存

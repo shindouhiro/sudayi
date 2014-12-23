@@ -3,7 +3,7 @@
 	});	
 	function my6DeviceReadyListener(){
 		$('#warehouse_reminder').click(function(){
- 			    navigator.camera.getPicture(onSuccess, onFail, { 
+ 			    navigator.camera.getPicture(onSuccess3, onFail, { 
 				quality: 70,
 			    destinationType: Camera.DestinationType.FILE_URL, //以文件地址返回url
 			    sourceType:Camera.PictureSourceType.PHOTOLIBRARY,
@@ -12,7 +12,7 @@
 			}); 			
  		})
 	}
-	function onSuccess(imageURI){
+	function onSuccess3(imageURI){
 		$condition=$(".warehouse_reminders").attr('src');
 		if($condition==undefined){
 		$width=$("#content").width()/3;
@@ -73,18 +73,16 @@ $(function(){
 		var name=$("#warehouse_name").val();
 			  var url='http://www.29mins.com/mobile_admin/store_manager/get_store_id?warehouse_name='+name;
               //alert(url);
-              alert(url);
               $.get(url,function(data){
 						obj = JSON.parse(data);
 						ware_id=obj.$oid;
-						alert(obj.$oid);
 						setItem('ware_id',ware_id);
           
 				})
 			$.ui.loadContent("#warehouse_adding");
 		}
         function fail(error) {
-            alert("上传失败！");
+            // alert("上传失败！");
         }
         
         

@@ -22,7 +22,7 @@
 	}
 	
 	function onFail(message) {
-	    alert('请重新选择');
+	    // alert('请重新选择');
 	}
 	
 	
@@ -55,6 +55,7 @@ $(function(){
 					var obj = JSON.parse(data);
 					if(obj==""){
 						 $.ui.loadContent("#warehouse_add");
+						 setItem('temporary',1);
 					}else{
 						 $.ui.loadContent("#chose_way");
 					}
@@ -62,9 +63,9 @@ $(function(){
        }
 
         function fail(error) {
-            alert("An error has occurred: Code = " + error.code);
-            console.log("upload error source " + error.source);
-            console.log("upload error target " + error.target);
+            // alert("An error has occurred: Code = " + error.code);
+            // console.log("upload error source " + error.source);
+            // console.log("upload error target " + error.target);
         }
         
         

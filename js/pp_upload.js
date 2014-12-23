@@ -3,21 +3,21 @@
 	});	
 	function myDeviceReadyListener(){
 		$('#pp_iden').click(function(){
- 			    navigator.camera.getPicture(onSuccess, onFail, { 
+ 			    navigator.camera.getPicture(onSu, onFail, { 
 				quality: 70,
 			    destinationType: Camera.DestinationType.FILE_URL, //以文件地址返回url
 //			    // sourceType:Camera.PictureSourceType.Camera,
 			    sourceType:Camera.PictureSourceType.PHOTOLIBRARY,
+			    
 //			   // mediaType:Camera.MediaType.VIDEO,
 			}); 			
  		})
 	}
-	function onSuccess(imageURI){
+	function onSu(imageURI){
 		$condition=$(".pp_idens").attr('src');
 		if($condition==undefined){
 		$width=$("#content").width();
 		$img="<img src='"+imageURI+"' width='"+$width+"' height='100' class='pp_idens'/>";
-		alert($img);
 		$(".pp_iden").append($img);
 		}else{
 			alert("只允许上传一张图片");
@@ -27,7 +27,7 @@
 	}
 	
 	function onFail(message) {
-	    alert('请重新选择');
+	    // alert('请重新选择');
 	}
 $(function(){
 	$("#pp_submit").click(function(){
@@ -109,7 +109,7 @@ $(function(){
 					str+='<li>'+city_name+'市</li>';
 					str+='<li>'+area_name+'</li>';
 					str+='<li><img src="'+card_img+'"/></li>';
-					alert(str);
+					//alert(str);
 					$("#audi").append(str);
 					$.ui.loadContent("#audit");
 
@@ -118,13 +118,13 @@ $(function(){
 				
 	})
 	 function win(r) {
-
+	 
        }
 
         function fail(error) {
-            alert("An error has occurred: Code = " + error.code);
-            console.log("upload error source " + error.source);
-            console.log("upload error target " + error.target);
+            // alert("An error has occurred: Code = " + error.code);
+            // console.log("upload error source " + error.source);
+            // console.log("upload error target " + error.target);
         }
         
         

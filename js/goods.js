@@ -4,7 +4,7 @@
 	
 	function my3DeviceReadyListener(){
 		$('#adv').click(function(){
- 			navigator.camera.getPicture(onSuccess1, onFail, { 
+ 			navigator.camera.getPicture(onSuccess_adv, onFail, { 
  				quality: 70,
 			    destinationType: Camera.DestinationType.FILE_URL, //以文件地址返回url
 			    //sourceType:Camera.PictureSourceType.Camera,
@@ -13,7 +13,7 @@
 			}); 			
  		})
  		$('#cover').click(function(){
- 			navigator.camera.getPicture(onSuccess2, onFail, { 
+ 			navigator.camera.getPicture(onSuccess_cover, onFail, { 
  				quality: 70,
 			    destinationType: Camera.DestinationType.FILE_URL, //以文件地址返回url
 			    sourceType:Camera.PictureSourceType.Camera,
@@ -23,7 +23,7 @@
  		})
  		
  		$("#detail").click(function(){
-	 		navigator.camera.getPicture(onSuccess3, onFail, { 
+	 		navigator.camera.getPicture(onSuccess_detail, onFail, { 
 	 				quality: 70,
 				    destinationType: Camera.DestinationType.FILE_URL, //以文件地址返回url
 				    sourceType:Camera.PictureSourceType.Camera,
@@ -32,7 +32,7 @@
 				}); 	
  		})
 	}
-	function onSuccess1(imageURI){
+	function onSuccess_adv(imageURI){
 		$condition=$(".advs").attr('src');
 		if($condition==undefined){
 		$width=$("#content").width()/3;
@@ -44,7 +44,7 @@
 		
 	}
 	
-	function onSuccess2(imageURI){
+	function onSuccess_cover(imageURI){
 		$condition=$(".covers").attr('src');
 		if($condition==undefined){
 		$width=$("#content").width()/3;
@@ -55,14 +55,14 @@
 		}	
 	}
 	
-	function onSuccess3(imageURI){
+	function onSuccess_detail(imageURI){
 		$width=$("#content").width()/3;
 		$img="<img src='"+imageURI+"' width='"+$width+"' height='"+$width+"' class='details'/>";
 		$(".detail").append($img);
 		
 	}
 	function onFail(message) {
-	    alert('请重新选择');
+	    // alert('请重新选择');
 	}
 	
 	
@@ -126,15 +126,12 @@ $(function(){
 						   var num = $("#loading_area select").length;
 						   num = num-1;
 						   var val=$("#loading_area select").eq(num).val();
-						   alert(321);
 						   var cate_id=val;
 						   var good_name=$("#goods_name").val();
 						   var description=$("#goods_description").val();
 						   var url='http://www.29mins.com/product_uploader/create_other_product_details?cate_id='+cate_id+'&good_name='+good_name+'&description='+description+'&product_id='+product_id+'&uid='+uid;
-						   alert(url);
 			             $.get(url,function(data){
 			 				var obj = JSON.parse(data);
-			 				alert(obj);
 					 	})
 				      
 				})
@@ -145,9 +142,9 @@ $(function(){
        }
 
         function fail(error) {
-            alert("An error has occurred: Code = " + error.code);
-            console.log("upload error source " + error.source);
-            console.log("upload error target " + error.target);
+            // alert("An error has occurred: Code = " + error.code);
+            // console.log("upload error source " + error.source);
+            // console.log("upload error target " + error.target);
         }
         
         

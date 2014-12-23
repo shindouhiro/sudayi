@@ -3,7 +3,7 @@
 	});	
 	function my2DeviceReadyListener(){
 		$('#pc_iden').click(function(){
- 			    navigator.camera.getPicture(onSuccess, onFail, { 
+ 			    navigator.camera.getPicture(onSuccess_iden, onFail, { 
 				quality: 70,
 			    destinationType: Camera.DestinationType.FILE_URL, //以文件地址返回url
 			    sourceType:Camera.PictureSourceType.PHOTOLIBRARY,
@@ -12,7 +12,7 @@
 			}); 			
  		})
  		$('#pc_off').click(function(){
- 			    navigator.camera.getPicture(onSuccess2, onFail, { 
+ 			    navigator.camera.getPicture(onSuccess_off, onFail, { 
  				quality: 70,
 			    destinationType: Camera.DestinationType.FILE_URL, //以文件地址返回url
 		//	    sourceType:Camera.PictureSourceType.Camera,
@@ -22,7 +22,7 @@
  		})
  	
 	}
-	function onSuccess(imageURI){
+	function onSuccess_iden(imageURI){
 		$condition=$(".pc_idens").attr('src');
 		if($condition==undefined){
 		$width=$("#content").width();
@@ -35,7 +35,7 @@
 	    
 	}
 	
-	function onSuccess2(imageURI){	
+	function onSuccess_off(imageURI){	
 		$condition=$(".pc_offs").attr('src');
 		if($condition==undefined){
 		$width=$("#content").width();
@@ -46,7 +46,7 @@
 		}
 	}
 	function onFail(message) {
-	    alert('请重新选择');
+	    // alert('请重新选择');
 	}
 $(function(){
 	$("#pc_submit").click(function(){
@@ -87,10 +87,7 @@ $(function(){
               $.get(url,function(data){
 						obj = JSON.parse(data);
 						var info_id=obj._id;
-						alert(info_id);
 						var imageURI=$(".pc_offs").attr('src');
-						alert(213);
-						alert(imageURI);
 						var options = new FileUploadOptions();
 			            options.fileKey="url2";
 			            options.fileName=imageURI.substr(imageURI.lastIndexOf('/')+1);
@@ -105,10 +102,10 @@ $(function(){
        }
 		
 		function win2(r){
-		    alert("上传成功！");
+		    // alert("上传成功！");
 		}
         function fail(error) {
-            alert("上传失败！");
+            // alert("上传失败！");
         }
         
         

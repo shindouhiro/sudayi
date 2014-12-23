@@ -33,7 +33,7 @@
       <link rel="stylesheet" type="text/css" href="css/badges.css"  />        
       <link rel="stylesheet" type="text/css" href="css/grid.css"  />
 
-      <link rel="stylesheet" type="text/css" href="css/myandroid.css"  />     
+      <link rel="stylesheet" type="text/css" href="css/bb.css"  />     
         
       <link rel="stylesheet" type="text/css" href="plugins/css/af.actionsheet.css"  />
       <link rel="stylesheet" type="text/css" href="plugins/css/af.popup.css"  />
@@ -160,14 +160,17 @@
 			// 登陆
 			$("#login_submit").click(function(){
 				var username = $("#username").val();
+				// alert(username);
 				var password = $("#password").val();
+				// alert(password);
 			$.get('http://www.29mins.com/mobile_admin/mobile_login/get_account?mobile='+username+'&password='+password+'',function(data){
 					var obj = JSON.parse(data);
-					var mobile=obj.mobile;
-					if(mobile){
-					setItem('username',mobile)
+					var id=obj['_id'];
+					if(id){
+						setItem('u_id',id);
+						$.ui.loadContent("#user_personal");
 					}else{
-						// alert(obj);
+						alert(obj);
 					}
 				})
 			})
@@ -175,33 +178,56 @@
 			// 用户
 			$("#user").blur(function(){
 				var user = $("#user").val();
-				$.get('http://www.29mins.com/mobile_admin/mobile_login/judge_same_username?username='+user+'',function(data){
-					var obj = JSON.parse(data);
-					// if(user){
-					// 	if(obj==0){
-					// 		$("")
-					// 	}
-					// }
-				})
+				$ck_user=/\w{6,18}/;
+				if($ck_user.test(user)==false){
+					$(".users").html("*账户不合法,字符6位以上<br>");
+				}else{
+					$.get('http://www.29mins.com/mobile_admin/mobile_login/judge_same_username?username='+user+'',function(data){
+						var obj = JSON.parse(data);
+							if(obj==0){
+								$(".users").html("被用");
+							}else{
+								$(".users").html("可用");
+							}
+						})
+				}
 			})
 			// 手机
 			$("#tel").blur(function(){
 				var tel = $("#tel").val();
-				$.get('http://www.29mins.com/mobile_admin/mobile_login/judge_same_mobile?mobile='+tel+'',function(data){
+				$ck_tel=/\d{11}/;
+				if($ck_tel.test(tel)==false){
+				$(".tel").html("*手机格式错误<br>");
+				}else{
+					$.get('http://www.29mins.com/mobile_admin/mobile_login/judge_same_mobile?mobile='+tel+'',function(data){
 					var obj = JSON.parse(data);
-					// alert(obj);
-				})
+						if(obj==0){
+							$(".tel").html("被用");
+						}else{
+							$(".tel").html("可用");
+						}
+					})
+				}
 			})
 			$("#email").blur(function(){
 				var email = $("#email").val();
-				$.get('http://www.29mins.com/mobile_admin/mobile_login/judge_same_email?email='+email+'',function(data){
+				$ck_email=/^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+((\.[a-zA-Z0-9_-]{2,3}){1,2})$/;
+				if($ck_email.test(email)==false){
+					$(".email").html("*邮箱格式不符");
+				}else{
+					$.get('http://www.29mins.com/mobile_admin/mobile_login/judge_same_email?email='+email+'',function(data){
 					var obj = JSON.parse(data);
-					// alert(obj);
-				})
+						if(obj==0){
+							$(".email").html("被用");
+						}else{
+							$(".email").html("可用");
+						}
+					})
+				}
 			})
 			// 注册
 			$("#res_submit").click(function(){
-				$(".user").html("");
+				$(".users").html("");
 				$(".pwd").html("");
 				$(".apwd").html("");
 				$(".tel").html("");
@@ -219,7 +245,7 @@
 				$email=$("#email").val();
 				$way  = $(':radio[name="way"]:checked').val();
 				if($ck_user.test($user)==false){
-					$(".user").html("*账户不合法,不能使用特殊字符<br>");
+					$(".users").html("*账户不合法,字符6位以上<br>");
 				}
 				if($ck_tel.test($tel)==false){
 					$(".tel").html("*手机格式错误<br>");
@@ -251,7 +277,6 @@
 				$.get('http://www.29mins.com/mobile_admin/mobile_login/create_account?user='+user+'&tel='+tel+'&pwd='+pwd+'&apwd='+apwd+'&way='+way+'&email='+email+'',function(data){
 					var obj = JSON.parse(data);
 					var type=obj.admin_type;
-					alert(obj);
 					if(type==1){
 						var id = obj._id;
 						setItem('u_id',id);
@@ -403,43 +428,93 @@
 				})
 			//获取根下的分类
 				getid('root',0);
-			// $("#root").change(function(){
-			// 	var id = $(this).val();
-			// 	$.get('http://www.29mins.com/product_uploader/get_nodes?cate_id='+id+'',function(data){
-			// 		var obj = JSON.parse(data);
-			// 		var str = "";
-			// 		str+= '<select id='catalog'>'
-			// 		for(var i=0;i<obj.length;i++){
-			// 			str+= '<option value='+obj[i]['_id']+'>'+obj[i]['name']+'</option>';
-			// 		}
-			// 		str+='</select>';
-			// 		$("#pic_type").append(str);
-			// 	})
-			// })
 			//获取上传图片级别
 			$("#reshelf_menu").on('click','li',function(){
 				var level=$(this).find("strong").text();
-				alert(level);
 
 				$("#pic_level").text(level);
+				if(level=='B'){
+					$("#cover").show();
+					$("#detail").show();
+					$("#adv").hide();
+				}else if(level=='C'){
+					$("#adv").hide();
+					$("#detail").hide();
+					$("#cover").show();
+				}else if(level=='D'){
+					$("#adv").hide()
+					$("#cover").hide();
+					$("#detail").show();
+				}else{
+					$("#adv").show();
+					$("#cover").show();
+					$("#detail").show();
+				}
 			})
-			//获取是否存在仓库
+			//获取仓库
+			var uid = getItem('u_id');//获取userid
 			
+			$.get('http://www.29mins.com/mobile_admin/store_manager/get_stores_by_uid',{uid:uid},function(data){
+				var obj=JSON.parse(data);
+				var str="";
+				var num=obj.length;
+				// setItem('num',num);
+				for(var i=0;i<obj.length;i++){
+					str+='<p id="'+obj[i]['_id']+'">'+obj[i]['name']+'</p>'
+				}
+				$("#chose_detail").append(str);	
+				//获取规格
+				// var pid='548f9d7bb15e0fea20000008';
+				var pid=getItem('product_id');
+				$.get('http://www.29mins.com/mobile_admin/store_manager/get_details_by_product_id',{pid:pid},function(data){
+					var obj=JSON.parse(data);
+					var dl="";
+					for(var i=0;i<obj.length;i++){
+						dl+="<dl><dd class='dc' id="+obj[i]['_id']+">"+obj[i]['name']+"</dd><dd style='width:80%;'><input type='text' name='warehouse_num' class='warehouse_num' style='width:40%;' placeholder='数量'>";
+						dl+="<input type='text' name='warehouse_price' class='warehouse_price' style='width:40%;' placeholder='价格'></dd>";
+						dl+="<br class='clear'></dl>";
+					}
+					$("#chose_detail p").each(function(){
+						$(this).after(dl);
+					})
+				})
+			
+			})
+		
+			$("#chose_submit").click(function(){
+				
+					$("#chose_detail dl").each(function(){
+						var num=$(this).find('.warehouse_num').val();
+						var price=$(this).find('.warehouse_price').val();
+						var gid=$(this).find('.dc').attr('id');
+				
+						var store_id=$(this).prev().attr('id');//获取仓库id;
+	
+						var pid=getItem('product_id');
+						 $.get('http://www.29mins.com/mobile_admin/store_manager/add_product_to_store',{gid:gid,store_id:store_id,number:num,price:price,pid:pid},function(data){
+						 var obj=JSON.parse(data);
+							
+						 })
+					})
+			})
 		})
 </script>
 <script type="text/javascript" src="js/one.js"></script>
-<!-- <script type="text/javascript" src="js/cordova.js"></script>
+<script type="text/javascript" src="js/cordova.js"></script>
 <script type="text/javascript" src="js/pc_upload.js"></script>
 <script type="text/javascript" src="js/pp_upload.js"></script>
 <script type="text/javascript" src="js/goods.js"></script>
 <script type="text/javascript" src="js/detail.js"></script> 
-<script type="text/javascript" src="js/warehouse_upload.js"></script>  -->
+<script type="text/javascript" src="js/warehouse_upload.js"></script>  
 </head>
 <body>
 	<div id="afui" class="bb">
 	<div id="content">
 		<!-- 登陆 -->
 			<div id="login" class="panel" selected="true" title="速达易" data-footer="pul_footer" data-tab="nav_login" >
+		<!--	<header>
+				<h1>速达易</h1>
+			</header>-->
 				<form style="margin-top:15%;">
 			      <p>账户</p>
 			      <input type="text" name="" id="username">
@@ -455,11 +530,11 @@
 		
 		<!-- 登陆结束 -->
 		<!-- 注册 -->
-		<div id="register" class="panel"  title="速达易" data-footer="pul_footer" data-header="pul_header">
+		<div id="register" class="panel"  title="速达易" data-footer="pul_footer" data-header="pul_header" >
 			<form action="">
 				<p>登陆名</p>
 				<input type="text" name="user" id="user">
-				<p class="user col"></p>
+				<p class="users col"></p>
 				<p>手机号</p>
 				<input type="text" name="tel" id="tel">
 				<p class="tel col"></p>
@@ -467,10 +542,10 @@
 				<input type="text" name="email" id="email">
 				<p class="email col"></p>
 				<p>登陆密码</p>
-				<input type="text" name="pwd" id="pwd">
+				<input type="password" name="pwd" id="pwd">
 				<p class="pwd col"></p>
 				<p>确认密码</p>
-				<input type="text" name="apwd" id="apwd">
+				<input type="password" name="apwd" id="apwd">
 				<p class="apwd col"></p>
 			    <div class="input-group" >
 				    <input id="pro" type="radio" value="1" name="way" >
@@ -483,6 +558,7 @@
 				<a  class="button block" id="res_submit">注册</a>
 				<a class="button block">其他方式注册</a>
 			</form>
+			<div class="shut_out"></div>
 		</div>
 		<!-- 注册结束 -->
 		<!-- 验证 -->
@@ -503,7 +579,8 @@
 			  <input id="provider" type="checkbox" name="" value="" style="margin-left:15%;"><label for="provider">我愿意签约成为供应商
     		  </label>
 			</div>
-			<a href="#provider_personal" class="button block">下一步</a>
+			<a href="#user_personal" class="button block">下一步</a>
+			<div class="shut_out"></div>
 		</div>
 		<!-- 供应商结束 -->
 		<!-- 供应商个人中心 -->
@@ -548,38 +625,42 @@
 						<p>△成交率是B级图片的1。2倍</p>
 					</li>
 				</a>
+				<br class="clear">
 				<a href="#loading_area">
 					<li>
 					<strong class="reshelf_level">B</strong>
 						<p>△出现在网站首页最佳位置</p>
 						<p>△必定展示在手机端首页</p>
-						<p>△浏览量是B级图片的3倍</p>
-						<p>△成交率是B级图片的1。2倍</p>
+						<p>△浏览量是C级图片的2.5倍</p>
+						<p>△成交率是C级图片的2倍</p>
 					</li>
 				</a>
+					<br class="clear">
 				<a href="#loading_area">
 					<li>
 						<strong class="reshelf_level">C</strong>
 						<p>△出现在网站首页最佳位置</p>
 						<p>△必定展示在手机端首页</p>
-						<p>△浏览量是B级图片的3倍</p>
-						<p>△成交率是B级图片的1。2倍</p>
+						<p>△浏览量是D级图片的5倍</p>
+						<p>△成交率是D级图片的2倍</p>
 					</li>
 				</a>
+				<br class="clear">
 				<a href="#loading_area">
 					<li>
 						<strong class="reshelf_level">D</strong>
-						<p>△出现在网站首页最佳位置</p>
-						<p>△必定展示在手机端首页</p>
-						<p>△浏览量是B级图片的3倍</p>
-						<p>△成交率是B级图片的1。2倍</p>
+						<p>△出现在购物推荐位置</p>
+						<p>△必定会出现在搜索结果页</p>
+						<p>△搜索结果只以距离排序</p>
+						<p>△拍照即可上传</p>
 					</li>
 				</a>
+					<br class="clear">
 			</ul>
 		</div>
 		<!-- 上货结束 -->
 		<!-- 上货区 -->
-		<div id="loading_area" class="panel"  title="速达易" data-footer="pul_footer"  data-header="pul_header">
+		<div id="loading_area" class="panel"  title="速达易"   data-header="pul_header">
 			<ul class="list" style="text-align:center">
 				<li id="pic_level">A</li>
 				<li id="adv"><a class="icon add ">横幅广告</a></li>
@@ -611,64 +692,23 @@
 					<a class="icon picture  button block pic">添加图片</a>
 				</div>
 			</form>
-<!--			<footer>
+			
+			<footer>
 				<a id="pic_add" class="icon add">加</a>
 				<a id="pic_remove" class="icon remove">减</a>
 				<a class="icon upload" id="detail_submit">上传</a>
-			</footer>-->
+			</footer>
 		</div>
 		<!-- 上货细节结束 -->
 		<!-- 选择方式 -->
 		<div id="chose_way" class="panel"  title="速达易"   data-header="pul_header">
 			<form style="margin-top:20px;">
-				<div>
-					<p>xxx店</p>
-				    <dl>
-				    	<dd class="dc">规格</dd>
-				    	<dd><input type="text" name="" id="" style="width:90%;"></dd>
-				    	<dd>
-				    	<input id="a" type="checkbox" value="1" name="test2"></input>
-						<label class="" for="a"></label>
-						<br style="clear:both"></br>
-				    	</dd>
-				    	<br class="clear">
-				    </dl>
-				     <dl>
-				    	<dd class="dc">规格</dd>
-				    	<dd><input type="text" name="" id="" style="width:90%;"></dd>
-				    	<dd>
-				    		<input id="b" type="checkbox" value="1" name="test2"></input>
-						<label class="" for="b"></label>
-						<br style="clear:both"></br>
-				    	</dd>
-				    </dl>
-				    <br class="clear">
-			    </div>
-			    <div>
-					<p>xxx店</p>
-				    <dl>
-				    	<dd class="dc">规格</dd>
-				    	<dd><input type="text" name="" id="" style="width:90%;"></dd>
-				    	<dd>  
-				    	<input id="a" type="checkbox" value="1" name="test2"></input>
-						<label class="" for="a"></label>
-						<br style="clear:both"></br>
-				    	</dd>
-				    	<br class="clear">
-				    </dl>
-				     <dl>
-				    	<dd class="dc">规格</dd>
-				    	<dd><input type="text" name="" id="" style="width:90%;"></dd>
-				    	<dd>
-				    		<input id="b" type="checkbox" value="1" name="test2"></input>
-						<label class="" for="b"></label>
-						<br style="clear:both"></br>
-				    	</dd>
-				    </dl>
-				    <br class="clear">
+				
+			    <div id="chose_detail">
+					
 			    </div>
 			  
-			    <a href="#chose_time" class="button block" style="margin-top:50px;">下一步</a>
+			    <a  class="button block" style="margin-top:50px;" id="chose_submit">下一步</a>
 			</form>
 		</div>
 		<!-- 选择方式结束 -->
@@ -701,6 +741,7 @@
 				</div>
 				<a  class="button block">下一步</a>
 			</form>
+			<div class="shut_out"></div>
 		</div>
 		<!-- 选择送货时间结束 -->
 		<!-- 供应商选择 -->
@@ -754,6 +795,7 @@
 		        <a class="button block" id="pp_submit">提交审核</a>
 		      </div>
 		    </form>
+		    <div class="shut_out"></div>
 		</div>
 		<!-- 供应商个人认证结束 -->
 		<!-- 供应商企业认证 -->
@@ -1239,30 +1281,22 @@
 				<a class="button block" id="warehouse_reminder">上传</a>
 				<div class="warehouse_reminder" style="text-align:center;"></div>
 				<a class="button block" id="reminder_submit">下一步</a>
+				<div class="shut_out"></div>
 		</div>
 		<!-- 仓库明细结束 -->
 <script type="text/javascript">
 	$(function(){
 		$("#ware_submit").click(function(){
-			alert(123);
 			var user=$("#ware_name").val();
 			var tel=$("#ware_tel").val();
 			var pwd=$("#ware_pwd").val();
 			var apwd=$("#ware_apwd").val();
 			var id = getItem('u_id');//获取userid
-			alert(id);
-			alert(id);
 			var email=$("#ware_email").val();
 			var url="http://www.29mins.com/mobile_admin/store_manager/new_account_in_charge";
-			alert(url);
-			 //  $.get(url,function(data){
-				// 		obj = JSON.parse(data);
-						
-          
-				// })
 			$.post(url,{uid:id,user:user,tel:tel,pwd:pwd,apwd:apwd,email:email},function(data){
-						
-          
+          			$.ui.loadContent("warehouse_set");
+          			window.top.location.reload();
 				})
 		})
 	})
@@ -1282,30 +1316,59 @@
 			        <input type="password" name="" id="ware_apwd" placeholder="再次输入密码">
 		    </div>
 		    <a class="button block"  id="ware_submit">提交</a>
+		    <div class="shut_out"></div>
 		</div>
 		<!-- 仓库人员添加结束 -->
 <script type="text/javascript">
 	$(function(){
-		var id = getItem('u_id');//l
-		alert(id);
+		$.ajaxSetup({ 
+		    async : false 
+		});
+		var id = getItem('u_id');
+		var j=1;
 		$.get('http://www.29mins.com/mobile_admin/store_manager/get_employees_by_account?uid='+id,function(data){
+
+			var str="";
 					var obj = JSON.parse(data);
-					var str="";
 					for(var i=0;i<obj.length;i++){
 						var name_id=obj[i]['emp'];
 						$.get('http://www.29mins.com/mobile_admin/store_manager/get_account_by_id?employee_id='+name_id,function(data){
 							var obj = JSON.parse(data);
+							var ware_id=obj._id;
+							//员工id
 							var name=obj.name;// 获取员工姓名
 							var mobile=obj.mobile;//获取手机号码
 							var pwd=obj.crypted_password; //获取密码
-							str +="<tr><td>1</td><td>"+name+"</td><td>"+mobile+"</td><td>******</td>";
-							str+="<td><input id='ware_notice' name='asdfasdf' value='2' type='checkbox'><label for='ware_notice'></label></td>";
-str+="<td><input id='ware_link' name='asdfasdf' value='2' type='checkbox'><label for='ware_link'></label></td></tr>";
-	alert(str);
-					$("#warehouse_content").append(str);
+							str +="<tr class='warehouse_each'><td>"+j+"</td><td>"+name+"<input type='hidden' value='"+ware_id+"'/></td><td>"+mobile+"</td><td>******</td>";
+							str+="<td><input id='ware_notice"+j+"' name='ware_note' value='1' type='checkbox'><label for='ware_notice"+j+"'></label></td>";
+							str+="<td><input id='ware_link"+j+"' name='link' value='1' type='radio'><label for='ware_link"+j+"'></label></td></tr>";
+					
+				
 						})
+
+						j++;
 					}
+					$("#warehouse_content").append(str);
 		})
+		$("#employee_submit").click(function(){
+			var store_id=getItem('ware_id');
+			var temporary=getItem('temporary');
+			if(temporary==1){
+				$.ui.loadContent("#chose_way");
+			}else{
+				$.ui.loadContent("#provider_personal");
+			}
+			$(".warehouse_each").each(function(){
+				var check=$(this).find("input[type=checkbox]:checked").val();
+				var radio=$(this).find("input[type=radio]:checked").val();
+				var id=$(this).find("input[type=hidden]").val();
+				
+				$.post('http://www.29mins.com/mobile_admin/store_manager/assign_employee_job',{store_id:store_id,employee_id:id,ware_notice:check,ware_link:radio},function(data){
+					var obj = JSON.parse(data);
+				})
+			})
+		})
+		
 	})	
 </script>		
 		<!-- 仓库人员设置 -->
@@ -1319,19 +1382,130 @@ str+="<td><input id='ware_link' name='asdfasdf' value='2' type='checkbox'><label
 					<td>订单通知</td>
 					<td>主要联系人</td>
 				</tr>
-				<tr>
+				<!-- <tr>
 					<td>1</td>
 					<td>王小明</td>
 					<td>13800138000</td>
 					<td>******</td>
 					<td><input id="ware_notice" name="asdfasdf" value="2" type="checkbox"><label for="ware_notice"></label></td>
 					<td><input id="ware_link" name="asdfasdf" value="2" type="checkbox"><label for="ware_link"></label></td>
-				</tr>
+				</tr> -->
 			</table>
 			<a class="button" style="width:80%;display:block;margin:20px auto;" href="#warehouse_adding">添加管理员</a>
-			<a class="button" style="width:80%;display:block;margin:20px auto;">提交审核</a>
+			<a class="button" style="width:80%;display:block;margin:20px auto;" id="employee_submit">提交审核</a>
+			<div class="shut_out"></div>
 		</div>
 		<!-- 仓库人员设置结束 -->
+		
+		
+		<!-- 员工管理 -->
+		<div id="employee_manager" class="panel"  title="速达易"   data-header="pul_header" data-footer="none" style="padding:0;">
+			<input type="text" name="" id="" placeholder="搜索" style="width:60%;margin:8px 0 0 20px;height:38px;">
+			<a class="button" href="#employee_add">新增员工</a>
+				<table cellspacing="0" cellpadding="0" width="100%" style="font-size:12px;" >
+					<tr>
+						<td>序号</td>
+						<td>所属</td>
+						<td>权限</td>
+						<td>姓名</td>
+						<td>登陆名</td>
+						<td>手机</td>
+					</tr>
+					<tr>
+						<td>1</td>
+						<td>总部</td>
+						<td>管理员</td>
+						<td>王小强</td>
+						<td>Wangxiaoqiang</td>
+						<td>13700000000</td>
+					</tr>
+				</table>
+		</div>
+		<!-- 员工管理结束 -->
+		
+		<!-- 员工添加 -->
+		<div id="employee_add" class="panel"  title="速达易"   data-header="pul_header" data-footer="none" >
+			<div class="input-group" style="margin-top:20px;padding:0;">
+					<p>姓名：</p>
+			        <input type="text" placeholder="姓名" id="ware_name">
+			        <p>出生日期：</p>
+			        <select name="" id="" class="">
+			        	<option value="">1</option>
+			        </select>
+			        <select name="" id="">
+			        	<option value="">1</option>
+			        </select>
+			        <select name="" id="">
+			        	<option value="">1</option>
+			        </select>
+			        <p>身份证号码</p>
+			        <input type="text" name="" id="ware_email" placeholder="身份证号码">
+			        <p>所属*</p>
+			        <select name="" id="">
+			        	<option value="">总部</option>
+			        </select>
+			        <p>所属*</p>
+			        <select name="" id="">
+			        	<option value="">管理员</option>
+			        </select>
+			        <p>手机</p>
+			        <input type="text" name="" id="" placeholder="手机">
+			        <p>住址</p>
+			        <input type="text" name="" id="" placeholder="住址">
+			        <p>登录名</p>
+			        <input type="text" name="" id="" placeholder="登录名">
+			        <p>密码</p>
+			        <input type="password" name="" id="" placeholder="密码">
+			        <a class="button block">上传照片</a>
+			         <a class="button block">上传身份证</a>
+		    </div>
+		</div>
+		<!-- 员工添加结束 -->
+		<!-- 用户个人中心 -->
+		<div id="user_personal" class="panel"  title="速达易"   data-header="pul_header" data-footer="none" >
+			<div id="personal_content">
+				<dl id="personal_left">
+					<p id="personal_left_top">
+						<span id="personal_left_top_pic"><img src="img/ad2dde274248acecc04295fb8142b13a.jpg" /></span>
+						<span class="seven">仓库:0</span>
+						<span class="seven">商品:0</span>
+						<span class="seven">品牌:0</span>
+						<br class="clear">
+					</p>
+					<p id="persoanl_right_bottom">
+						<span>张先生</span>
+						<span class="eight">宝服装批发有限公司</span>
+						<span class="eight eighter">证管理员</span>
+					</p>
+				</dl>
+				<dl id="personal_right">
+					<p><button>拍照上传</button></p>
+					<p><button>添加仓库</button></p>
+					<p><button>分享网店</button></p>
+				</dl>
+				<br class="clear">
+			</div>
+			<div id="personal_info_box">
+				<ul id="personal_info">
+					<li style="border-right:1px solid #eee;">
+					新的消息
+					<span id="new_info">确认新订单的地方</span>
+					</li>
+					<li>
+					我的订单
+					<span id="new_order">处理中订单及交易历史</span>
+					</li>
+					<br class="both">
+				</ul>
+			</div>
+			<ul id="personal_chose">
+				<a href="#reshelf"><li>上传商品<span>免费上传曝光你的商品</span></li></a>
+				<li>员工管理<span>新增、编辑你的员工</span></li>
+				<li>网店管理<span>管理你已经上传的商品</span></li>
+				<li>仓库管理<span>新增、编辑你的取货点</span></li>
+				<li>素材管理<span>管理好素材上货更轻松</span></li>
+			</ul>
+		<!-- 用户个人中心结束 -->
 	<header id="pul_header">
 		<h1>速达易</h1>
 		<a id="backButton" onclick="$.ui.goBack()" class="button" style="visibility: visible;">返回</a>
@@ -1352,12 +1526,21 @@ str+="<td><input id='ware_link' name='asdfasdf' value='2' type='checkbox'><label
 <script src="dev/js/mobiscroll.datetime-2.6.2.js" type="text/javascript"></script>
 <script type="text/javascript">
 	$(function () {
-			$("#pic_add").click(function(){
-			$add="<div class='pictures'><input type='text' name='' id='' placeholder='规格'><input type='text' name='' id='' placeholder='价格'><a class='icon picture  button block pic'>添加图片</a></div>";
-			 $("#details").append($add);
-			})
+		
+		
+			
+				$("#pic_add").click(function(){
+				$add="<div class='pictures'><input type='text' name='' id='' placeholder='规格'><input type='text' name='' id='' placeholder='价格'><a class='icon picture  button block pic'>添加图片</a></div>";
+				 $("#details").append($add);
+				})
+				$("#pic_remove").click(function(){
+					$("div[class=pictures]:last").remove();
+				})
+
+		
+			
 			$("#pic_remove").click(function(){
-				$("div[class=pictures]:last").remove();
+				$("div[class=input-group]:last").remove();
 			})
 
 	        var currYear = (new Date()).getFullYear();  
@@ -1380,7 +1563,7 @@ str+="<td><input id='ware_link' name='asdfasdf' value='2' type='checkbox'><label
 	        var optTime = $.extend(opt['time'], opt['default']);
 	        $("#appDateTime").mobiscroll(optDateTime).datetime(optDateTime);
 	        $(".time").mobiscroll(optTime).time(optTime);
-	        
+	      
 	    });
 
 
